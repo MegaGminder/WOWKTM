@@ -1,47 +1,57 @@
-import { Link, useLocation } from "react-router-dom";
-import { useState } from "react";
-import { motion } from "framer-motion";
+import { useState } from 'react';
+import { Link } from 'react-router-dom';
+import { motion } from 'framer-motion';
 
-export default function Navbar() {
-  const [open, setOpen] = useState(false);
-  const location = useLocation();
+const Navbar = () => {
+  const [isOpen, setIsOpen] = useState(false);
 
   return (
-    <nav className="w-full bg-white/90 backdrop-blur shadow sticky top-0 z-50">
-      <div className="container mx-auto px-4 py-3 flex justify-between items-center">
-        <Link to="/" className="text-3xl font-extrabold text-primary drop-shadow">WoWKTM</Link>
-        <div className="hidden md:flex gap-7 items-center">
-          <NavLink to="/products" label="Products" />
-          <NavLink to="/shops" label="Shops" />
-          <NavLink to="/cart" label="Cart" />
-          <NavLink to="/messages" label="Messages" />
-          <NavLink to="/login" label="Sign In" />
+    <nav className="bg-wowktm-primary text-white shadow-lg">
+      <div className="container mx-auto px-4 py-4 flex justify-between items-center">
+        <Link to="/" className="text-2xl font-extrabold">
+          WoWKTM
+        </Link>
+        <div className="hidden md:flex space-x-6">
+          <Link to="/products" className="hover:text-wowktm-secondary">
+            Products
+          </Link>
+          <Link to="/login" className="hover:text-wowktm-secondary">
+            Login
+          </Link>
+          <Link to="/signup" className="hover:text-wowktm-secondary">
+            Signup
+          </Link>
         </div>
-        <button className="md:hidden" onClick={() => setOpen(o => !o)}>
-          <span className="text-3xl">☰</span>
+        <button
+          className="md:hidden"
+          onClick={() => setIsOpen(!isOpen)}
+        >
+          <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16m-7 6h7" />
+          </svg>
         </button>
       </div>
-      {/* Mobile Drawer */}
-      <motion.div
-        initial={false}
-        animate={open ? { height: "auto" } : { height: 0 }}
-        className="md:hidden bg-white/90 overflow-hidden transition-all"
-      >
-        <div className="flex flex-col px-4 gap-4 pb-3">
-          <NavLink to="/products" label="Products" />
-          <NavLink to="/shops" label="Shops" />
-          <NavLink to="/cart" label="Cart" />
-          <NavLink to="/messages" label="Messages" />
-          <NavLink to="/login" label="Sign In" />
-        </div>
-      </motion.div>
+      {isOpen && (
+        <motion.div
+          initial={{ height: 0 }}
+          animate={{ height: 'auto' }}
+          className="md:hidden bg-wowktm-primary"
+        >
+          <div className="flex flex-col space-y-4 py-4 px-4">
+            <Link to="/products" className="hover:text-wowktm-secondary">
+              Products
+            </Link>
+            <Link to="/login" className="hover:text-wowktm-secondary">
+              Login
+            </Link>
+            <Link to="/signup" className="hover:text-wowktm-secondary">
+              Signup
+            </Link>
+          </div>
+        </motion.div>
+      )}
     </nav>
   );
-}
-function NavLink({ to, label }: { to: string, label: string }) {
-  return (
-    <Link to={to} className="font-semibold hover:text-primary py-2 transition">
-      {label}
-    </Link>
-  );
-}
+};
+
+export default Navbar;

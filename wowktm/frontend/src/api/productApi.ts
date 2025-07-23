@@ -1,12 +1,7 @@
-import axiosClient from "./axiosClient";
-import { Product } from "@/types/product";
+import axiosClient from './axiosClient';
+import { Product } from '../types/product';
 
-export const fetchProducts = async (page = 1, limit = 20): Promise<Product[]> => {
-  const res = await axiosClient.get<Product[]>(`/products?page=${page}&limit=${limit}`);
-  return res.data;
-};
-
-export const fetchProductById = async (id: string): Promise<Product> => {
-  const res = await axiosClient.get<Product>(`/products/${id}`);
-  return res.data;
+export const getProducts = async (page: number): Promise<Product[]> => {
+  const response = await axiosClient.get(`/products?page=${page}&size=8`);
+  return response.data;
 };

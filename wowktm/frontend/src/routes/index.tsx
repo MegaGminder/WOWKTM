@@ -1,19 +1,25 @@
-import { Route, Routes } from "react-router-dom";
-import LandingPage from "../pages/LandingPage";
-import ProductsPage from "../pages/ProductsPage";
-import CartPage from "../pages/CartPage";
+import { RouteObject } from 'react-router-dom';
+import LandingPage from '../pages/LandingPage';
+import ProductsPage from '../pages/ProductsPage';
+import LoginPage from '../pages/LoginPage';
+import SignupPage from '../pages/SignupPage';
 
-// More pages as you add
-
-export default function AppRoutes() {
-  return (
-    <Routes>
-      <Route path="/" element={<LandingPage />} />
-      <Route path="/products" element={<ProductsPage />} />
-      <Route path="/cart" element={<CartPage />} />
-      {/* More routes */}
-    </Routes>
-    
-  );
-  
+export const routes: RouteObject[] = [
+  {
+    path: '/',
+    element: <LandingPage />,
+  },
+  {
+    path: '/products',
+    element: <ProductsPage />,
+  },
+  {
+    path: '/login',
+    element: <LoginPage />,
+  },
+  {
+    path: '/signup',
+    element: <SignupPage />,
+  },
+];
 }
