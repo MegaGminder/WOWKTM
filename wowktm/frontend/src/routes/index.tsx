@@ -13,6 +13,7 @@ export default function AppRoutes() {
       <Route path="/cart" element={<CartPage />} />
       {/* More routes */}
     </Routes>
+    
   );
   
 }
