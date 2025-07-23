@@ -1,0 +1,8 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Animations (see above for classes!) */
+body {
+    @apply bg-black;
+}

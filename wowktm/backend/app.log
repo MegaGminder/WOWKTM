@@ -1,0 +1,234 @@
+2025-07-22T19:54:55.643-07:00  INFO 12804 --- [WoWKTM] [main] com.wowktm.WoWktmApplication             : Starting WoWktmApplication using Java 17.0.15 with PID 12804 (C:\Users\Rikesh\Documents\WOWKTM\wowktm\backend\target\classes started by Rikesh in C:\Users\Rikesh\Documents\WOWKTM\wowktm\backend)
+2025-07-22T19:54:55.659-07:00  INFO 12804 --- [WoWKTM] [main] com.wowktm.WoWktmApplication             : No active profile set, falling back to 1 default profile: "default"
+2025-07-22T19:54:56.287-07:00  INFO 12804 --- [WoWKTM] [main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2025-07-22T19:54:56.313-07:00  INFO 12804 --- [WoWKTM] [main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 16 ms. Found 0 JPA repository interfaces.
+2025-07-22T19:54:56.788-07:00  INFO 12804 --- [WoWKTM] [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port 8080 (http)
+2025-07-22T19:54:56.801-07:00  INFO 12804 --- [WoWKTM] [main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2025-07-22T19:54:56.802-07:00  INFO 12804 --- [WoWKTM] [main] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/10.1.42]
+2025-07-22T19:54:56.872-07:00  INFO 12804 --- [WoWKTM] [main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2025-07-22T19:54:56.872-07:00  INFO 12804 --- [WoWKTM] [main] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 1162 ms
+2025-07-22T19:54:57.041-07:00  INFO 12804 --- [WoWKTM] [main] o.hibernate.jpa.internal.util.LogHelper  : HHH000204: Processing PersistenceUnitInfo [name: default]
+2025-07-22T19:54:57.095-07:00  INFO 12804 --- [WoWKTM] [main] org.hibernate.Version                    : HHH000412: Hibernate ORM core version 6.6.18.Final
+2025-07-22T19:54:57.129-07:00  INFO 12804 --- [WoWKTM] [main] o.h.c.internal.RegionFactoryInitiator    : HHH000026: Second-level cache disabled
+2025-07-22T19:54:57.413-07:00  INFO 12804 --- [WoWKTM] [main] o.s.o.j.p.SpringPersistenceUnitInfo      : No LoadTimeWeaver setup: ignoring JPA class transformer
+2025-07-22T19:54:57.446-07:00  INFO 12804 --- [WoWKTM] [main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2025-07-22T19:54:57.629-07:00  INFO 12804 --- [WoWKTM] [main] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Added connection org.postgresql.jdbc.PgConnection@308e87a1
+2025-07-22T19:54:57.631-07:00  INFO 12804 --- [WoWKTM] [main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2025-07-22T19:54:57.666-07:00  WARN 12804 --- [WoWKTM] [main] org.hibernate.orm.deprecation            : HHH90000025: PostgreSQLDialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+2025-07-22T19:54:57.690-07:00  INFO 12804 --- [WoWKTM] [main] org.hibernate.orm.connections.pooling    : HHH10001005: Database info:
+	Database JDBC URL [Connecting through datasource 'HikariDataSource (HikariPool-1)']
+	Database driver: undefined/unknown
+	Database version: 15.13
+	Autocommit mode: undefined/unknown
+	Isolation level: undefined/unknown
+	Minimum pool size: undefined/unknown
+	Maximum pool size: undefined/unknown
+2025-07-22T19:54:58.022-07:00  INFO 12804 --- [WoWKTM] [main] o.h.e.t.j.p.i.JtaPlatformInitiator       : HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2025-07-22T19:54:58.022-07:00  INFO 12804 --- [WoWKTM] [main] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2025-07-22T19:54:58.074-07:00  WARN 12804 --- [WoWKTM] [main] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2025-07-22T19:54:58.446-07:00  WARN 12804 --- [WoWKTM] [main] .s.s.UserDetailsServiceAutoConfiguration : 
+
+Using generated security password: 5712a1c3-c132-41c8-86d1-e3709eb9b640
+
+This generated password is for development use only. Your security configuration must be updated before running your application in production.
+
+2025-07-22T19:54:58.458-07:00  INFO 12804 --- [WoWKTM] [main] r$InitializeUserDetailsManagerConfigurer : Global AuthenticationManager configured with UserDetailsService bean with name inMemoryUserDetailsManager
+2025-07-22T19:54:58.604-07:00  INFO 12804 --- [WoWKTM] [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port 8080 (http) with context path '/'
+2025-07-22T19:54:58.620-07:00  INFO 12804 --- [WoWKTM] [main] com.wowktm.WoWktmApplication             : Started WoWktmApplication in 3.504 seconds (process running for 3.888)
+2025-07-22T19:55:03.280-07:00  INFO 12804 --- [WoWKTM] [http-nio-8080-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2025-07-22T19:55:03.281-07:00  INFO 12804 --- [WoWKTM] [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+2025-07-22T19:55:03.282-07:00  INFO 12804 --- [WoWKTM] [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Completed initialization in 1 ms
+2025-07-22T19:56:03.372-07:00  INFO 13664 --- [WoWKTM] [main] com.wowktm.WoWktmApplication             : Starting WoWktmApplication using Java 17.0.15 with PID 13664 (C:\Users\Rikesh\Documents\WOWKTM\wowktm\backend\target\classes started by Rikesh in C:\Users\Rikesh\Documents\WOWKTM\wowktm\backend)
+2025-07-22T19:56:03.375-07:00  INFO 13664 --- [WoWKTM] [main] com.wowktm.WoWktmApplication             : No active profile set, falling back to 1 default profile: "default"
+2025-07-22T19:56:04.081-07:00  INFO 13664 --- [WoWKTM] [main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2025-07-22T19:56:04.107-07:00  INFO 13664 --- [WoWKTM] [main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 15 ms. Found 0 JPA repository interfaces.
+2025-07-22T19:56:04.611-07:00  INFO 13664 --- [WoWKTM] [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port 8080 (http)
+2025-07-22T19:56:04.625-07:00  INFO 13664 --- [WoWKTM] [main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2025-07-22T19:56:04.626-07:00  INFO 13664 --- [WoWKTM] [main] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/10.1.42]
+2025-07-22T19:56:04.694-07:00  INFO 13664 --- [WoWKTM] [main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2025-07-22T19:56:04.695-07:00  INFO 13664 --- [WoWKTM] [main] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 1270 ms
+2025-07-22T19:56:04.867-07:00  INFO 13664 --- [WoWKTM] [main] o.hibernate.jpa.internal.util.LogHelper  : HHH000204: Processing PersistenceUnitInfo [name: default]
+2025-07-22T19:56:04.929-07:00  INFO 13664 --- [WoWKTM] [main] org.hibernate.Version                    : HHH000412: Hibernate ORM core version 6.6.18.Final
+2025-07-22T19:56:04.976-07:00  INFO 13664 --- [WoWKTM] [main] o.h.c.internal.RegionFactoryInitiator    : HHH000026: Second-level cache disabled
+2025-07-22T19:56:05.291-07:00  INFO 13664 --- [WoWKTM] [main] o.s.o.j.p.SpringPersistenceUnitInfo      : No LoadTimeWeaver setup: ignoring JPA class transformer
+2025-07-22T19:56:05.326-07:00  INFO 13664 --- [WoWKTM] [main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2025-07-22T19:56:05.506-07:00  INFO 13664 --- [WoWKTM] [main] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Added connection org.postgresql.jdbc.PgConnection@58882a93
+2025-07-22T19:56:05.508-07:00  INFO 13664 --- [WoWKTM] [main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2025-07-22T19:56:05.543-07:00  WARN 13664 --- [WoWKTM] [main] org.hibernate.orm.deprecation            : HHH90000025: PostgreSQLDialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+2025-07-22T19:56:05.568-07:00  INFO 13664 --- [WoWKTM] [main] org.hibernate.orm.connections.pooling    : HHH10001005: Database info:
+	Database JDBC URL [Connecting through datasource 'HikariDataSource (HikariPool-1)']
+	Database driver: undefined/unknown
+	Database version: 15.13
+	Autocommit mode: undefined/unknown
+	Isolation level: undefined/unknown
+	Minimum pool size: undefined/unknown
+	Maximum pool size: undefined/unknown
+2025-07-22T19:56:05.957-07:00  INFO 13664 --- [WoWKTM] [main] o.h.e.t.j.p.i.JtaPlatformInitiator       : HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2025-07-22T19:56:05.963-07:00  INFO 13664 --- [WoWKTM] [main] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2025-07-22T19:56:05.998-07:00  WARN 13664 --- [WoWKTM] [main] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2025-07-22T19:56:06.384-07:00  WARN 13664 --- [WoWKTM] [main] .s.s.UserDetailsServiceAutoConfiguration : 
+
+Using generated security password: 1b9585c0-c154-4deb-a8b2-328c478a7cb5
+
+This generated password is for development use only. Your security configuration must be updated before running your application in production.
+
+2025-07-22T19:56:06.391-07:00  INFO 13664 --- [WoWKTM] [main] r$InitializeUserDetailsManagerConfigurer : Global AuthenticationManager configured with UserDetailsService bean with name inMemoryUserDetailsManager
+2025-07-22T19:56:06.552-07:00  INFO 13664 --- [WoWKTM] [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port 8080 (http) with context path '/'
+2025-07-22T19:56:06.561-07:00  INFO 13664 --- [WoWKTM] [main] com.wowktm.WoWktmApplication             : Started WoWktmApplication in 3.792 seconds (process running for 4.165)
+2025-07-22T19:56:46.830-07:00  INFO 13664 --- [WoWKTM] [http-nio-8080-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2025-07-22T19:56:46.830-07:00  INFO 13664 --- [WoWKTM] [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+2025-07-22T19:56:46.830-07:00  INFO 13664 --- [WoWKTM] [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Completed initialization in 0 ms
+2025-07-22T20:08:23.616-07:00  INFO 20188 --- [WoWKTM] [main] com.wowktm.WoWktmApplication             : Starting WoWktmApplication using Java 17.0.15 with PID 20188 (C:\Users\Rikesh\Documents\WOWKTM\wowktm\backend\target\classes started by Rikesh in C:\Users\Rikesh\Documents\WOWKTM\wowktm\backend)
+2025-07-22T20:08:23.618-07:00  INFO 20188 --- [WoWKTM] [main] com.wowktm.WoWktmApplication             : No active profile set, falling back to 1 default profile: "default"
+2025-07-22T20:08:24.210-07:00  INFO 20188 --- [WoWKTM] [main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2025-07-22T20:08:24.247-07:00  INFO 20188 --- [WoWKTM] [main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 15 ms. Found 0 JPA repository interfaces.
+2025-07-22T20:08:24.739-07:00  INFO 20188 --- [WoWKTM] [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port 8080 (http)
+2025-07-22T20:08:24.762-07:00  INFO 20188 --- [WoWKTM] [main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2025-07-22T20:08:24.763-07:00  INFO 20188 --- [WoWKTM] [main] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/10.1.42]
+2025-07-22T20:08:24.840-07:00  INFO 20188 --- [WoWKTM] [main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2025-07-22T20:08:24.841-07:00  INFO 20188 --- [WoWKTM] [main] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 1173 ms
+2025-07-22T20:08:25.006-07:00  INFO 20188 --- [WoWKTM] [main] o.hibernate.jpa.internal.util.LogHelper  : HHH000204: Processing PersistenceUnitInfo [name: default]
+2025-07-22T20:08:25.064-07:00  INFO 20188 --- [WoWKTM] [main] org.hibernate.Version                    : HHH000412: Hibernate ORM core version 6.6.18.Final
+2025-07-22T20:08:25.100-07:00  INFO 20188 --- [WoWKTM] [main] o.h.c.internal.RegionFactoryInitiator    : HHH000026: Second-level cache disabled
+2025-07-22T20:08:25.383-07:00  INFO 20188 --- [WoWKTM] [main] o.s.o.j.p.SpringPersistenceUnitInfo      : No LoadTimeWeaver setup: ignoring JPA class transformer
+2025-07-22T20:08:25.416-07:00  INFO 20188 --- [WoWKTM] [main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2025-07-22T20:08:25.588-07:00  INFO 20188 --- [WoWKTM] [main] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Added connection org.postgresql.jdbc.PgConnection@308e87a1
+2025-07-22T20:08:25.588-07:00  INFO 20188 --- [WoWKTM] [main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2025-07-22T20:08:25.631-07:00  WARN 20188 --- [WoWKTM] [main] org.hibernate.orm.deprecation            : HHH90000025: PostgreSQLDialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+2025-07-22T20:08:25.651-07:00  INFO 20188 --- [WoWKTM] [main] org.hibernate.orm.connections.pooling    : HHH10001005: Database info:
+	Database JDBC URL [Connecting through datasource 'HikariDataSource (HikariPool-1)']
+	Database driver: undefined/unknown
+	Database version: 15.13
+	Autocommit mode: undefined/unknown
+	Isolation level: undefined/unknown
+	Minimum pool size: undefined/unknown
+	Maximum pool size: undefined/unknown
+2025-07-22T20:08:25.970-07:00  INFO 20188 --- [WoWKTM] [main] o.h.e.t.j.p.i.JtaPlatformInitiator       : HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2025-07-22T20:08:25.970-07:00  INFO 20188 --- [WoWKTM] [main] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2025-07-22T20:08:26.025-07:00  WARN 20188 --- [WoWKTM] [main] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2025-07-22T20:08:26.409-07:00  WARN 20188 --- [WoWKTM] [main] .s.s.UserDetailsServiceAutoConfiguration : 
+
+Using generated security password: f8cb6883-8a33-4d63-b0b5-2a6a9033e08b
+
+This generated password is for development use only. Your security configuration must be updated before running your application in production.
+
+2025-07-22T20:08:26.428-07:00  INFO 20188 --- [WoWKTM] [main] r$InitializeUserDetailsManagerConfigurer : Global AuthenticationManager configured with UserDetailsService bean with name inMemoryUserDetailsManager
+2025-07-22T20:08:26.591-07:00  INFO 20188 --- [WoWKTM] [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port 8080 (http) with context path '/'
+2025-07-22T20:08:26.591-07:00  INFO 20188 --- [WoWKTM] [main] com.wowktm.WoWktmApplication             : Started WoWktmApplication in 3.522 seconds (process running for 3.902)
+2025-07-22T20:08:31.508-07:00  INFO 20188 --- [WoWKTM] [http-nio-8080-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2025-07-22T20:08:31.509-07:00  INFO 20188 --- [WoWKTM] [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+2025-07-22T20:08:31.509-07:00  INFO 20188 --- [WoWKTM] [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Completed initialization in 0 ms
+2025-07-22T20:48:14.296-07:00  INFO 9260 --- [WoWKTM] [main] com.wowktm.WoWktmApplication             : Starting WoWktmApplication using Java 17.0.15 with PID 9260 (C:\Users\Rikesh\Documents\WOWKTM\wowktm\backend\target\classes started by Rikesh in C:\Users\Rikesh\Documents\WOWKTM\wowktm\backend)
+2025-07-22T20:48:14.299-07:00  INFO 9260 --- [WoWKTM] [main] com.wowktm.WoWktmApplication             : No active profile set, falling back to 1 default profile: "default"
+2025-07-22T20:48:15.170-07:00  INFO 9260 --- [WoWKTM] [main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2025-07-22T20:48:15.210-07:00  INFO 9260 --- [WoWKTM] [main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 25 ms. Found 0 JPA repository interfaces.
+2025-07-22T20:48:15.845-07:00  INFO 9260 --- [WoWKTM] [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port 8080 (http)
+2025-07-22T20:48:15.861-07:00  INFO 9260 --- [WoWKTM] [main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2025-07-22T20:48:15.862-07:00  INFO 9260 --- [WoWKTM] [main] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/10.1.42]
+2025-07-22T20:48:15.940-07:00  INFO 9260 --- [WoWKTM] [main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2025-07-22T20:48:15.941-07:00  INFO 9260 --- [WoWKTM] [main] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 1568 ms
+2025-07-22T20:48:16.143-07:00  INFO 9260 --- [WoWKTM] [main] o.hibernate.jpa.internal.util.LogHelper  : HHH000204: Processing PersistenceUnitInfo [name: default]
+2025-07-22T20:48:16.226-07:00  INFO 9260 --- [WoWKTM] [main] org.hibernate.Version                    : HHH000412: Hibernate ORM core version 6.6.18.Final
+2025-07-22T20:48:16.268-07:00  INFO 9260 --- [WoWKTM] [main] o.h.c.internal.RegionFactoryInitiator    : HHH000026: Second-level cache disabled
+2025-07-22T20:48:16.812-07:00  INFO 9260 --- [WoWKTM] [main] o.s.o.j.p.SpringPersistenceUnitInfo      : No LoadTimeWeaver setup: ignoring JPA class transformer
+2025-07-22T20:48:16.882-07:00  INFO 9260 --- [WoWKTM] [main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2025-07-22T20:48:17.159-07:00  INFO 9260 --- [WoWKTM] [main] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Added connection org.postgresql.jdbc.PgConnection@11148dc2
+2025-07-22T20:48:17.161-07:00  INFO 9260 --- [WoWKTM] [main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2025-07-22T20:48:17.206-07:00  WARN 9260 --- [WoWKTM] [main] org.hibernate.orm.deprecation            : HHH90000025: PostgreSQLDialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+2025-07-22T20:48:17.232-07:00  INFO 9260 --- [WoWKTM] [main] org.hibernate.orm.connections.pooling    : HHH10001005: Database info:
+	Database JDBC URL [Connecting through datasource 'HikariDataSource (HikariPool-1)']
+	Database driver: undefined/unknown
+	Database version: 15.13
+	Autocommit mode: undefined/unknown
+	Isolation level: undefined/unknown
+	Minimum pool size: undefined/unknown
+	Maximum pool size: undefined/unknown
+2025-07-22T20:48:17.689-07:00  INFO 9260 --- [WoWKTM] [main] o.h.e.t.j.p.i.JtaPlatformInitiator       : HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2025-07-22T20:48:17.697-07:00  INFO 9260 --- [WoWKTM] [main] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2025-07-22T20:48:17.751-07:00  WARN 9260 --- [WoWKTM] [main] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2025-07-22T20:48:18.225-07:00  WARN 9260 --- [WoWKTM] [main] .s.s.UserDetailsServiceAutoConfiguration : 
+
+Using generated security password: 4c9c4435-4ef9-47f4-91c4-7d83880939c7
+
+This generated password is for development use only. Your security configuration must be updated before running your application in production.
+
+2025-07-22T20:48:18.236-07:00  INFO 9260 --- [WoWKTM] [main] r$InitializeUserDetailsManagerConfigurer : Global AuthenticationManager configured with UserDetailsService bean with name inMemoryUserDetailsManager
+2025-07-22T20:48:18.429-07:00  INFO 9260 --- [WoWKTM] [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port 8080 (http) with context path '/'
+2025-07-22T20:48:18.442-07:00  INFO 9260 --- [WoWKTM] [main] com.wowktm.WoWktmApplication             : Started WoWktmApplication in 5.027 seconds (process running for 5.618)
+2025-07-22T20:48:50.282-07:00  INFO 9260 --- [WoWKTM] [http-nio-8080-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2025-07-22T20:48:50.282-07:00  INFO 9260 --- [WoWKTM] [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+2025-07-22T20:48:50.297-07:00  INFO 9260 --- [WoWKTM] [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Completed initialization in 0 ms
+2025-07-22T20:53:17.071-07:00  INFO 18076 --- [WoWKTM] [main] com.wowktm.WoWktmApplicationTests        : Starting WoWktmApplicationTests using Java 17.0.15 with PID 18076 (started by Rikesh in C:\Users\Rikesh\Documents\WOWKTM\wowktm\backend)
+2025-07-22T20:53:17.074-07:00  INFO 18076 --- [WoWKTM] [main] com.wowktm.WoWktmApplicationTests        : No active profile set, falling back to 1 default profile: "default"
+2025-07-22T20:53:17.866-07:00  INFO 18076 --- [WoWKTM] [main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2025-07-22T20:53:17.900-07:00  INFO 18076 --- [WoWKTM] [main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 18 ms. Found 0 JPA repository interfaces.
+2025-07-22T20:53:18.431-07:00  INFO 18076 --- [WoWKTM] [main] o.hibernate.jpa.internal.util.LogHelper  : HHH000204: Processing PersistenceUnitInfo [name: default]
+2025-07-22T20:53:18.510-07:00  INFO 18076 --- [WoWKTM] [main] org.hibernate.Version                    : HHH000412: Hibernate ORM core version 6.6.18.Final
+2025-07-22T20:53:18.564-07:00  INFO 18076 --- [WoWKTM] [main] o.h.c.internal.RegionFactoryInitiator    : HHH000026: Second-level cache disabled
+2025-07-22T20:53:19.004-07:00  INFO 18076 --- [WoWKTM] [main] o.s.o.j.p.SpringPersistenceUnitInfo      : No LoadTimeWeaver setup: ignoring JPA class transformer
+2025-07-22T20:53:19.043-07:00  INFO 18076 --- [WoWKTM] [main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2025-07-22T20:53:19.282-07:00  INFO 18076 --- [WoWKTM] [main] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Added connection org.postgresql.jdbc.PgConnection@984de01
+2025-07-22T20:53:19.284-07:00  INFO 18076 --- [WoWKTM] [main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2025-07-22T20:53:19.328-07:00  WARN 18076 --- [WoWKTM] [main] org.hibernate.orm.deprecation            : HHH90000025: PostgreSQLDialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+2025-07-22T20:53:19.355-07:00  INFO 18076 --- [WoWKTM] [main] org.hibernate.orm.connections.pooling    : HHH10001005: Database info:
+	Database JDBC URL [Connecting through datasource 'HikariDataSource (HikariPool-1)']
+	Database driver: undefined/unknown
+	Database version: 15.13
+	Autocommit mode: undefined/unknown
+	Isolation level: undefined/unknown
+	Minimum pool size: undefined/unknown
+	Maximum pool size: undefined/unknown
+2025-07-22T20:53:19.831-07:00  INFO 18076 --- [WoWKTM] [main] o.h.e.t.j.p.i.JtaPlatformInitiator       : HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2025-07-22T20:53:19.838-07:00  INFO 18076 --- [WoWKTM] [main] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2025-07-22T20:53:20.021-07:00  WARN 18076 --- [WoWKTM] [main] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2025-07-22T20:53:20.543-07:00  WARN 18076 --- [WoWKTM] [main] .s.s.UserDetailsServiceAutoConfiguration : 
+
+Using generated security password: 78a24242-a1d3-47aa-8c9f-55cdde37ea9c
+
+This generated password is for development use only. Your security configuration must be updated before running your application in production.
+
+2025-07-22T20:53:20.552-07:00  INFO 18076 --- [WoWKTM] [main] r$InitializeUserDetailsManagerConfigurer : Global AuthenticationManager configured with UserDetailsService bean with name inMemoryUserDetailsManager
+2025-07-22T20:53:20.735-07:00  INFO 18076 --- [WoWKTM] [main] com.wowktm.WoWktmApplicationTests        : Started WoWktmApplicationTests in 4.102 seconds (process running for 5.284)
+2025-07-22T20:53:21.408-07:00  INFO 18076 --- [WoWKTM] [SpringApplicationShutdownHook] j.LocalContainerEntityManagerFactoryBean : Closing JPA EntityManagerFactory for persistence unit 'default'
+2025-07-22T20:53:21.408-07:00  INFO 18076 --- [WoWKTM] [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown initiated...
+2025-07-22T20:53:21.408-07:00  INFO 18076 --- [WoWKTM] [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown completed.
+2025-07-22T20:53:30.378-07:00  INFO 2572 --- [WoWKTM] [main] com.wowktm.WoWktmApplication             : Starting WoWktmApplication using Java 17.0.15 with PID 2572 (C:\Users\Rikesh\Documents\WOWKTM\wowktm\backend\target\classes started by Rikesh in C:\Users\Rikesh\Documents\WOWKTM\wowktm\backend)
+2025-07-22T20:53:30.381-07:00  INFO 2572 --- [WoWKTM] [main] com.wowktm.WoWktmApplication             : No active profile set, falling back to 1 default profile: "default"
+2025-07-22T20:53:30.995-07:00  INFO 2572 --- [WoWKTM] [main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2025-07-22T20:53:31.015-07:00  INFO 2572 --- [WoWKTM] [main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 10 ms. Found 0 JPA repository interfaces.
+2025-07-22T20:53:31.497-07:00  INFO 2572 --- [WoWKTM] [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port 8080 (http)
+2025-07-22T20:53:31.510-07:00  INFO 2572 --- [WoWKTM] [main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2025-07-22T20:53:31.511-07:00  INFO 2572 --- [WoWKTM] [main] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/10.1.42]
+2025-07-22T20:53:31.580-07:00  INFO 2572 --- [WoWKTM] [main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2025-07-22T20:53:31.581-07:00  INFO 2572 --- [WoWKTM] [main] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 1150 ms
+2025-07-22T20:53:31.743-07:00  INFO 2572 --- [WoWKTM] [main] o.hibernate.jpa.internal.util.LogHelper  : HHH000204: Processing PersistenceUnitInfo [name: default]
+2025-07-22T20:53:31.798-07:00  INFO 2572 --- [WoWKTM] [main] org.hibernate.Version                    : HHH000412: Hibernate ORM core version 6.6.18.Final
+2025-07-22T20:53:31.833-07:00  INFO 2572 --- [WoWKTM] [main] o.h.c.internal.RegionFactoryInitiator    : HHH000026: Second-level cache disabled
+2025-07-22T20:53:32.110-07:00  INFO 2572 --- [WoWKTM] [main] o.s.o.j.p.SpringPersistenceUnitInfo      : No LoadTimeWeaver setup: ignoring JPA class transformer
+2025-07-22T20:53:32.142-07:00  INFO 2572 --- [WoWKTM] [main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2025-07-22T20:53:32.325-07:00  INFO 2572 --- [WoWKTM] [main] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Added connection org.postgresql.jdbc.PgConnection@4efb13f1
+2025-07-22T20:53:32.328-07:00  INFO 2572 --- [WoWKTM] [main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2025-07-22T20:53:32.365-07:00  WARN 2572 --- [WoWKTM] [main] org.hibernate.orm.deprecation            : HHH90000025: PostgreSQLDialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+2025-07-22T20:53:32.390-07:00  INFO 2572 --- [WoWKTM] [main] org.hibernate.orm.connections.pooling    : HHH10001005: Database info:
+	Database JDBC URL [Connecting through datasource 'HikariDataSource (HikariPool-1)']
+	Database driver: undefined/unknown
+	Database version: 15.13
+	Autocommit mode: undefined/unknown
+	Isolation level: undefined/unknown
+	Minimum pool size: undefined/unknown
+	Maximum pool size: undefined/unknown
+2025-07-22T20:53:32.740-07:00  INFO 2572 --- [WoWKTM] [main] o.h.e.t.j.p.i.JtaPlatformInitiator       : HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2025-07-22T20:53:32.748-07:00  INFO 2572 --- [WoWKTM] [main] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2025-07-22T20:53:32.783-07:00  WARN 2572 --- [WoWKTM] [main] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2025-07-22T20:53:33.158-07:00  WARN 2572 --- [WoWKTM] [main] .s.s.UserDetailsServiceAutoConfiguration : 
+
+Using generated security password: 23ca6cbd-abca-4bf2-a7c8-9edea2537041
+
+This generated password is for development use only. Your security configuration must be updated before running your application in production.
+
+2025-07-22T20:53:33.158-07:00  INFO 2572 --- [WoWKTM] [main] r$InitializeUserDetailsManagerConfigurer : Global AuthenticationManager configured with UserDetailsService bean with name inMemoryUserDetailsManager
+2025-07-22T20:53:33.319-07:00  INFO 2572 --- [WoWKTM] [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port 8080 (http) with context path '/'
+2025-07-22T20:53:33.335-07:00  INFO 2572 --- [WoWKTM] [main] com.wowktm.WoWktmApplication             : Started WoWktmApplication in 3.503 seconds (process running for 3.882)
+2025-07-22T20:53:40.864-07:00  INFO 2572 --- [WoWKTM] [http-nio-8080-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2025-07-22T20:53:40.865-07:00  INFO 2572 --- [WoWKTM] [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+2025-07-22T20:53:40.866-07:00  INFO 2572 --- [WoWKTM] [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Completed initialization in 1 ms
