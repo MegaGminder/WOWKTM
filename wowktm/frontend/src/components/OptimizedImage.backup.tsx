@@ -62,7 +62,7 @@ const OptimizedImage: React.FC<OptimizedImageProps> = ({
         }
       },
       {
-        rootMargin: '50px',
+        rootMargin: '50px', // Start loading 50px before image comes into view
         threshold: 0.1,
       }
     );
@@ -85,6 +85,7 @@ const OptimizedImage: React.FC<OptimizedImageProps> = ({
   };
 
   const optimizedSrc = getOptimizedSrc(src);
+  const defaultPlaceholder = optimizedImages.art1;
 
   return (
     <div 
@@ -94,35 +95,51 @@ const OptimizedImage: React.FC<OptimizedImageProps> = ({
     >
       {/* Loading placeholder */}
       {!isLoaded && !isError && (
-        <div className="absolute inset-0 flex items-center justify-center bg-gray-50">
-          <div className="w-8 h-8 border-2 border-gray-300 border-t-blue-500 rounded-full animate-spin" />
+        <div className="absolute inset-0 flex items-center justify-center bg-gray-100 animate-pulse">
+          <div className="flex flex-col items-center space-y-2">
+            <div className="w-8 h-8 border-2 border-wowktm-primary border-t-transparent rounded-full animate-spin"></div>
+            <span className="text-xs text-gray-500 font-medium">Loading...</span>
+          </div>
         </div>
       )}
 
-      {/* Main image */}
-      {isInView && (
+      {/* Error placeholder */}
+      {isError && (
+        <div className="absolute inset-0 flex items-center justify-center bg-gray-100">
+          <div className="flex flex-col items-center space-y-2 text-gray-400">
+            <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L4.082 14.5c-.77.833.192 2.5 1.732 2.5z" />
+            </svg>
+            <span className="text-xs">Failed to load</span>
+          </div>
+        </div>
+      )}
+
+      {/* Actual image */}
+      {isInView && !isError && (
         <img
-          src={optimizedSrc}
+          src={src}
+          srcSet={generateSrcSet(src)}
+          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
           alt={alt}
           width={width}
           height={height}
-          onLoad={handleLoad}
-          onError={handleError}
           className={`w-full h-full object-cover transition-opacity duration-300 ${
             isLoaded ? 'opacity-100' : 'opacity-0'
           }`}
+          onLoad={handleLoad}
+          onError={handleError}
           loading={priority ? 'eager' : 'lazy'}
-          decoding="async"
         />
       )}
 
-      {/* Error state */}
-      {isError && (
-        <div className="absolute inset-0 flex items-center justify-center bg-gray-100">
-          <div className="text-center text-gray-500">
-            <div className="text-sm">Image unavailable</div>
-          </div>
-        </div>
+      {/* Blur-up effect overlay */}
+      {!isLoaded && isInView && !isError && placeholder && (
+        <img
+          src={placeholder || defaultPlaceholder}
+          alt=""
+          className="absolute inset-0 w-full h-full object-cover filter blur-sm scale-110 transition-opacity duration-300"
+        />
       )}
     </div>
   );

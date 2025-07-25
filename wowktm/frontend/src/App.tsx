@@ -22,8 +22,14 @@ import { PermissionDenied } from './contexts/AuthContext';
 import { ToastProvider } from './components/ToastProvider';
 import { CartProvider } from './context/CartContext';
 import { AuthProvider } from './contexts/AuthContext';
+import { initPerformanceMonitoring } from './utils/performance';
+import { useEffect } from 'react';
 
 function App() {
+  useEffect(() => {
+    initPerformanceMonitoring();
+  }, []);
+
   return (
     <AuthProvider>
       <CartProvider>

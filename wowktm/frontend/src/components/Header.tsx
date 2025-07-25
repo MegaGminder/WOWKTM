@@ -192,10 +192,20 @@ const Header = () => {
             </div>
 
             {/* Right side icons */}
-            <div className="flex items-center space-x-4">
+            <div className="flex items-center space-x-2 sm:space-x-4">
+              {/* Mobile Search Button */}
+              <button
+                onClick={() => setIsSearchFocused(!isSearchFocused)}
+                className="sm:hidden p-2 text-gray-600 hover:text-wowktm-primary transition-colors"
+              >
+                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                </svg>
+              </button>
+
               {/* Wishlist */}
               <Link to="/wishlist" className="p-2 text-gray-600 hover:text-wowktm-primary transition-colors">
-                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <svg className="w-5 h-5 sm:w-6 sm:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
                 </svg>
               </Link>
@@ -383,6 +393,54 @@ const Header = () => {
           </div>
         </div>
       </header>
+
+      {/* Mobile Search Overlay */}
+      {isSearchFocused && (
+        <div className="sm:hidden fixed inset-0 bg-white z-50">
+          <div className="flex items-center p-4 border-b">
+            <button
+              onClick={() => setIsSearchFocused(false)}
+              className="p-2 mr-2 text-gray-600"
+            >
+              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 19l-7-7 7-7" />
+              </svg>
+            </button>
+            <form onSubmit={handleSearchSubmit} className="flex-1">
+              <div className="relative">
+                <input
+                  type="text"
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  placeholder="Search for products..."
+                  className="w-full px-4 py-3 pl-10 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-wowktm-primary"
+                  autoFocus
+                />
+                <svg className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                </svg>
+              </div>
+            </form>
+          </div>
+          {/* Search suggestions for mobile */}
+          {searchQuery.length > 0 && (
+            <div className="p-4">
+              <h4 className="text-sm font-semibold text-gray-700 mb-3">Popular Searches</h4>
+              <div className="space-y-2">
+                <div className="px-3 py-3 bg-gray-50 rounded-lg text-sm text-gray-600">
+                  🔍 {searchQuery} in Electronics
+                </div>
+                <div className="px-3 py-3 bg-gray-50 rounded-lg text-sm text-gray-600">
+                  🔍 {searchQuery} in Fashion
+                </div>
+                <div className="px-3 py-3 bg-gray-50 rounded-lg text-sm text-gray-600">
+                  🔍 {searchQuery} in Home & Garden
+                </div>
+              </div>
+            </div>
+          )}
+        </div>
+      )}
 
       {/* Mobile Menu Overlay */}
       {isMobileMenuOpen && (

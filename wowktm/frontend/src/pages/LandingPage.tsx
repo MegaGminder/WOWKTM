@@ -1,21 +1,31 @@
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
-import { useState } from 'react';
+import { useState, lazy, Suspense } from 'react';
 import { useCart } from '../context/CartContext';
 import { useToast } from '../components/ToastProvider';
 import OptimizedImage from '../components/OptimizedImage';
-import Wishlist from '../components/Wishlist';
-import LiveChatSimple from '../components/LiveChatSimple';
-import ArtisanShowcase from '../components/ArtisanShowcase';
-import ProcessAnimation from '../components/ProcessAnimation';
-import ArtisanJourneyAnimation from '../components/ArtisanJourneyAnimation';
-import NepaliProcessAnimation from '../components/NepaliProcessAnimation';
+import { PerformantMotion, fadeInUp, fadeIn, useReducedMotion } from '../utils/optimizedMotion';
+import { preloadCriticalImages } from '../utils/imageOptimization';
 import { useScrollToTop } from '../hooks/useScrollToTop';
+
+// Lazy load heavy components
+const Wishlist = lazy(() => import('../components/Wishlist'));
+const LiveChatSimple = lazy(() => import('../components/LiveChatSimple'));
+const ArtisanShowcase = lazy(() => import('../components/ArtisanShowcase'));
+const ProcessAnimation = lazy(() => import('../components/ProcessAnimation'));
+const ArtisanJourneyAnimation = lazy(() => import('../components/ArtisanJourneyAnimation'));
+const NepaliProcessAnimation = lazy(() => import('../components/NepaliProcessAnimation'));
 
 const LandingPage = () => {
   useScrollToTop();
   const { addItem } = useCart();
   const { showToast } = useToast();
+  const reducedMotion = useReducedMotion();
+
+  // Preload critical images
+  React.useEffect(() => {
+    preloadCriticalImages();
+  }, []);
 
   const categories = [
     { name: 'Handmade Jewelry', image: 'https://images.unsplash.com/photo-1515562141207-7a88fb7ce338?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&h=200&q=80', fallback: 'https://images.unsplash.com/photo-1515562141207-7a88fb7ce338?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&h=200&q=80', path: '/products?category=jewelry' },
@@ -26,7 +36,7 @@ const LandingPage = () => {
   return (
     <div className="min-h-screen bg-gray-50">
       {/* Mixed Media Hero Section with Nepali Cultural Vibes */}
-      <div className="relative h-screen overflow-hidden bg-gradient-to-br from-orange-900 via-red-900 to-yellow-900">
+      <div className="relative h-screen sm:h-screen lg:h-screen overflow-hidden bg-gradient-to-br from-orange-900 via-red-900 to-yellow-900" style={{ minHeight: '100vh' }}>
         {/* Nepali Cultural Background */}
         <motion.div
           className="absolute inset-0"
@@ -40,7 +50,9 @@ const LandingPage = () => {
         />
 
         {/* Nepali Cultural Process Animation */}
-        <NepaliProcessAnimation />
+        <Suspense fallback={<div className="absolute inset-0 bg-gradient-to-br from-orange-900 via-red-900 to-yellow-900" />}>
+          {!reducedMotion && <NepaliProcessAnimation />}
+        </Suspense>
 
         {/* Traditional Pattern Overlay */}
         <div 
@@ -285,16 +297,16 @@ const LandingPage = () => {
 
         {/* Content Layer */}
         <div className="relative z-20 h-full flex items-center justify-center">
-          <div className="container mx-auto px-6 text-center">
+          <div className="container mx-auto px-4 sm:px-6 lg:px-8 text-center">
 
             {/* Enhanced Subtitle with Advanced Animations */}
             <motion.div
               initial={{ opacity: 0, y: 50 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 1, delay: 1.5 }}
-              className="mb-12"
+              className="mb-8 sm:mb-12"
             >
-              <div className="text-2xl md:text-3xl font-bold max-w-4xl mx-auto leading-tight mb-6">
+              <div className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold max-w-4xl mx-auto leading-tight mb-4 sm:mb-6">
                 <h2 
                   className="text-gray-800"
                   style={{
@@ -314,7 +326,7 @@ const LandingPage = () => {
                 className="relative"
               >
                 <motion.p
-                  className="text-lg md:text-xl font-medium max-w-2xl mx-auto relative z-10"
+                  className="text-base sm:text-lg md:text-xl font-medium max-w-2xl mx-auto relative z-10 px-4"
                   style={{
                     background: 'linear-gradient(45deg, #ffffff, #f0f0f0, #ffffff)',
                     backgroundSize: '200% 200%',
@@ -337,7 +349,7 @@ const LandingPage = () => {
                   
                   {/* Animated emoji */}
                   <motion.span
-                    className="inline-block ml-2 text-2xl"
+                    className="inline-block ml-2 text-lg sm:text-xl md:text-2xl"
                     animate={{
                       scale: [1, 1.3, 1],
                       rotate: [0, 10, -10, 0],
@@ -378,11 +390,11 @@ const LandingPage = () => {
                 damping: 20,
                 delay: 3
               }}
-              className="relative group"
+              className="relative group px-4"
             >
               <Link
                 to="/products"
-                className="group relative inline-flex items-center px-12 py-6 text-xl font-bold text-white bg-gradient-to-r from-pink-500 via-purple-500 to-indigo-500 rounded-full overflow-hidden transform transition-all duration-500 hover:scale-110 hover:rotate-2 hover:shadow-2xl"
+                className="group relative inline-flex items-center px-6 py-3 sm:px-8 sm:py-4 lg:px-12 lg:py-6 text-sm sm:text-lg lg:text-xl font-bold text-white bg-gradient-to-r from-pink-500 via-purple-500 to-indigo-500 rounded-full overflow-hidden transform transition-all duration-500 hover:scale-110 hover:rotate-2 hover:shadow-2xl"
                 style={{
                   boxShadow: '0 20px 40px rgba(0,0,0,0.3), 0 0 0 1px rgba(255,255,255,0.1)',
                   backgroundSize: '200% 200%'
