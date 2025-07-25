@@ -1,46 +1,196 @@
-import { useEffect, useState } from 'react';
-import ProductCard3D from '../components/ProductCard3D';
-import useInfiniteScroll from '../hooks/useInfiniteScroll';
-import { Product } from '../types/product';
-import { getProducts } from '../api/productApi';
+import React, { useState } from 'react';
+import { useSearchParams } from 'react-router-dom';
+import ProductListing from '../components/ProductListing';
+import AdvancedSearch from '../components/AdvancedSearch';
 
-const ProductsPage = () => {
-  const [products, setProducts] = useState<Product[]>([]);
-  const [page, setPage] = useState(1);
-  const [loading, setLoading] = useState(false);
+interface Filters {
+  priceRange: [number, number];
+  rating: number;
+  inStock: boolean;
+  sortBy: string;
+  materials: string[];
+  shipsFrom: string;
+  isHandmade: boolean;
+  isVintage: boolean;
+  isCustomizable: boolean;
+}
 
-  const { isFetching } = useInfiniteScroll(() => setPage((prev) => prev + 1));
+const ProductsPage: React.FC = () => {
+  const [searchParams] = useSearchParams();
+  const [filters, setFilters] = useState<Filters>({
+    priceRange: [0, 1000],
+    rating: 0,
+    inStock: false,
+    sortBy: 'relevance',
+    materials: [],
+    shipsFrom: '',
+    isHandmade: false,
+    isVintage: false,
+    isCustomizable: false
+  });
 
-  useEffect(() => {
-    const fetchProducts = async () => {
-      setLoading(true);
-      try {
-        const response = await getProducts(page);
-        setProducts((prev) => [...prev, ...response]);
-      } catch (error) {
-        console.error('Error fetching products:', error);
-      } finally {
-        setLoading(false);
-      }
-    };
-    fetchProducts();
-  }, [page]);
+  const category = searchParams.get('category');
+  const searchQuery = searchParams.get('search');
 
   return (
-    <div className="container mx-auto px-4 py-16">
-      <h2 className="text-3xl font-extrabold text-wowktm-primary mb-6">
-        Our Products
-      </h2>
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-        {products.map((product) => (
-          <ProductCard3D key={product.id} product={product} />
-        ))}
-      </div>
-      {loading || isFetching ? (
-        <div className="text-center mt-6">
-          <span className="text-wowktm-primary">Loading...</span>
+    <div className="min-h-screen bg-gray-50">
+      {/* Search Bar */}
+      <div className="bg-white shadow-sm border-b">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+          <AdvancedSearch />
         </div>
-      ) : null}
+      </div>
+
+      {/* Filters Sidebar & Products */}
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <div className="flex flex-col lg:flex-row gap-8">
+          {/* Filters Sidebar */}
+          <div className="lg:w-1/4">
+            <div className="bg-white rounded-xl shadow-lg p-6 sticky top-4">
+              <h3 className="text-lg font-semibold text-gray-900 mb-4">Filters</h3>
+              
+              {/* Price Range */}
+              <div className="mb-6">
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Price Range: ${filters.priceRange[0]} - ${filters.priceRange[1]}
+                </label>
+                <div className="space-y-2">
+                  <input
+                    type="range"
+                    min="0"
+                    max="1000"
+                    step="10"
+                    value={filters.priceRange[0]}
+                    onChange={(e) => setFilters(prev => ({ 
+                      ...prev, 
+                      priceRange: [parseInt(e.target.value), prev.priceRange[1]] 
+                    }))}
+                    className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer"
+                  />
+                  <input
+                    type="range"
+                    min="0"
+                    max="1000"
+                    step="10"
+                    value={filters.priceRange[1]}
+                    onChange={(e) => setFilters(prev => ({ 
+                      ...prev, 
+                      priceRange: [prev.priceRange[0], parseInt(e.target.value)] 
+                    }))}
+                    className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer"
+                  />
+                </div>
+              </div>
+
+              {/* Rating */}
+              <div className="mb-6">
+                <label className="block text-sm font-medium text-gray-700 mb-2">Minimum Rating</label>
+                <div className="flex items-center space-x-1">
+                  {[1, 2, 3, 4, 5].map((star) => (
+                    <button
+                      key={star}
+                      onClick={() => setFilters(prev => ({ ...prev, rating: star }))}
+                      className={`w-6 h-6 ${
+                        star <= filters.rating ? 'text-yellow-400' : 'text-gray-300'
+                      }`}
+                    >
+                      <svg fill="currentColor" viewBox="0 0 20 20">
+                        <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                      </svg>
+                    </button>
+                  ))}
+                </div>
+              </div>
+
+              {/* Special Features */}
+              <div className="mb-6">
+                <label className="block text-sm font-medium text-gray-700 mb-2">Special Features</label>
+                <div className="space-y-2">
+                  <label className="flex items-center">
+                    <input
+                      type="checkbox"
+                      checked={filters.isHandmade}
+                      onChange={(e) => setFilters(prev => ({ ...prev, isHandmade: e.target.checked }))}
+                      className="rounded border-gray-300 text-wowktm-primary focus:ring-wowktm-primary"
+                    />
+                    <span className="ml-2 text-sm text-gray-700">Handmade</span>
+                  </label>
+                  <label className="flex items-center">
+                    <input
+                      type="checkbox"
+                      checked={filters.isVintage}
+                      onChange={(e) => setFilters(prev => ({ ...prev, isVintage: e.target.checked }))}
+                      className="rounded border-gray-300 text-wowktm-primary focus:ring-wowktm-primary"
+                    />
+                    <span className="ml-2 text-sm text-gray-700">Vintage</span>
+                  </label>
+                  <label className="flex items-center">
+                    <input
+                      type="checkbox"
+                      checked={filters.isCustomizable}
+                      onChange={(e) => setFilters(prev => ({ ...prev, isCustomizable: e.target.checked }))}
+                      className="rounded border-gray-300 text-wowktm-primary focus:ring-wowktm-primary"
+                    />
+                    <span className="ml-2 text-sm text-gray-700">Customizable</span>
+                  </label>
+                  <label className="flex items-center">
+                    <input
+                      type="checkbox"
+                      checked={filters.inStock}
+                      onChange={(e) => setFilters(prev => ({ ...prev, inStock: e.target.checked }))}
+                      className="rounded border-gray-300 text-wowktm-primary focus:ring-wowktm-primary"
+                    />
+                    <span className="ml-2 text-sm text-gray-700">In Stock Only</span>
+                  </label>
+                </div>
+              </div>
+
+              {/* Sort By */}
+              <div className="mb-6">
+                <label className="block text-sm font-medium text-gray-700 mb-2">Sort By</label>
+                <select
+                  value={filters.sortBy}
+                  onChange={(e) => setFilters(prev => ({ ...prev, sortBy: e.target.value }))}
+                  className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-wowktm-primary focus:border-transparent"
+                >
+                  <option value="relevance">Relevance</option>
+                  <option value="price_low">Price: Low to High</option>
+                  <option value="price_high">Price: High to Low</option>
+                  <option value="rating">Customer Rating</option>
+                  <option value="newest">Newest First</option>
+                </select>
+              </div>
+
+              {/* Reset Filters */}
+              <button
+                onClick={() => setFilters({
+                  priceRange: [0, 1000],
+                  rating: 0,
+                  inStock: false,
+                  sortBy: 'relevance',
+                  materials: [],
+                  shipsFrom: '',
+                  isHandmade: false,
+                  isVintage: false,
+                  isCustomizable: false
+                })}
+                className="w-full bg-gray-100 text-gray-700 py-2 px-4 rounded-lg hover:bg-gray-200 transition-colors"
+              >
+                Reset Filters
+              </button>
+            </div>
+          </div>
+
+          {/* Products List */}
+          <div className="lg:w-3/4">
+            <ProductListing 
+              category={category || undefined}
+              searchQuery={searchQuery || undefined}
+              filters={filters}
+            />
+          </div>
+        </div>
+      </div>
     </div>
   );
 };

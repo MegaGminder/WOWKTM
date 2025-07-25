@@ -1,21 +1,8 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { useCart } from '../context/CartContext';
-import AdvancedSearch from './AdvancedSearch';
-
-interface CartItem {
-  id: number;
-  name: string;
-  price: number;
-  originalPrice?: number;
-  image: string;
-  quantity: number;
-  seller: string;
-  shipping: string;
-  inStock: boolean;
-  category: string;
-  description: string;
-}
+import { useAuth, RoleBadge, PermissionGate } from '../contexts/AuthContext';
+import { motion, AnimatePresence } from 'framer-motion';
 
 const Header = () => {
   const [searchQuery, setSearchQuery] = useState('');
@@ -23,15 +10,97 @@ const Header = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isCartDropdownOpen, setIsCartDropdownOpen] = useState(false);
   const [isAccountDropdownOpen, setIsAccountDropdownOpen] = useState(false);
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [showAdvancedSearch, setShowAdvancedSearch] = useState(false);
+  const [isCategoryDropdownOpen, setIsCategoryDropdownOpen] = useState(false);
 
-  const { items: cartItems, removeItem, updateQuantity } = useCart();
-  const cartItemsCount = cartItems.reduce((total: number, item: CartItem) => total + item.quantity, 0);
+  const { user, logout } = useAuth();
+  const { items, removeItem, updateQuantity } = useCart();
+  const cartItemsCount = items.reduce((total: number, item: any) => total + item.quantity, 0);
 
   const searchRef = useRef<HTMLDivElement>(null);
   const cartRef = useRef<HTMLDivElement>(null);
   const accountRef = useRef<HTMLDivElement>(null);
+  const categoryRef = useRef<HTMLDivElement>(null);
+
+  // Etsy-style categories
+  const categories = [
+    {
+      id: 'jewelry',
+      name: 'Jewelry & Accessories',
+      icon: '💎',
+      subcategories: [
+        'Handmade Jewelry',
+        'Vintage Jewelry', 
+        'Accessories'
+      ]
+    },
+    {
+      id: 'clothing',
+      name: 'Clothing & Shoes',
+      icon: '👗',
+      subcategories: [
+        "Women's Clothing",
+        "Men's Clothing",
+        'Shoes'
+      ]
+    },
+    {
+      id: 'home-living',
+      name: 'Home & Living',
+      icon: '🏠',
+      subcategories: [
+        'Home Decor',
+        'Furniture',
+        'Kitchen & Dining'
+      ]
+    },
+    {
+      id: 'art-collectibles',
+      name: 'Art & Collectibles',
+      icon: '🎨',
+      subcategories: [
+        'Original Art',
+        'Photography',
+        'Collectibles'
+      ]
+    },
+    {
+      id: 'craft-supplies',
+      name: 'Craft Supplies & Tools',
+      icon: '✂️',
+      subcategories: [
+        'Fabric & Fiber',
+        'Beading & Jewelry Making',
+        'Scrapbooking'
+      ]
+    },
+    {
+      id: 'wedding-party',
+      name: 'Weddings & Party',
+      icon: '💒',
+      subcategories: [
+        'Wedding Decorations',
+        'Party Supplies'
+      ]
+    },
+    {
+      id: 'toys-games',
+      name: 'Toys & Games',
+      icon: '🧸',
+      subcategories: [
+        'Handmade Toys',
+        'Vintage Games'
+      ]
+    },
+    {
+      id: 'pet-supplies',
+      name: 'Pet Supplies',
+      icon: '🐾',
+      subcategories: [
+        'Pet Accessories',
+        'Pet Toys'
+      ]
+    }
+  ];
 
   // Close dropdowns when clicking outside
   useEffect(() => {
@@ -44,7 +113,9 @@ const Header = () => {
       }
       if (searchRef.current && !searchRef.current.contains(event.target as Node)) {
         setIsSearchFocused(false);
-        setShowAdvancedSearch(false);
+      }
+      if (categoryRef.current && !categoryRef.current.contains(event.target as Node)) {
+        setIsCategoryDropdownOpen(false);
       }
     };
 
@@ -62,28 +133,30 @@ const Header = () => {
 
   return (
     <>
-      <header className="sticky top-0 z-50 bg-white shadow-sm border-b">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <header className="sticky top-0 z-50 bg-white/95 backdrop-blur-xl shadow-lg border-b border-gray-100">
+        {/* Curved bottom design */}
+        <div className="absolute bottom-0 left-0 right-0 h-1 bg-gradient-to-r from-wowktm-primary via-wowktm-accent to-wowktm-secondary"></div>
+        <div className="w-full px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-16">
             {/* Mobile menu button */}
             <button
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-              className="md:hidden p-2 rounded-md text-gray-600 hover:text-wowktm-primary hover:bg-gray-100 transition-colors"
+              className="md:hidden p-2 rounded-xl text-gray-600 hover:text-wowktm-primary hover:bg-gradient-to-br hover:from-gray-50 hover:to-gray-100 transition-all duration-300"
             >
               <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 6h16M4 12h16M4 18h16" />
               </svg>
             </button>
 
-            {/* Logo */}
-            <Link to="/" className="flex items-center space-x-3 flex-shrink-0">
+            {/* Logo - Using Footer Reference with Modern Curves */}
+            <Link to="/" className="flex items-center space-x-3 flex-shrink-0 group transition-all duration-300 hover:scale-105">
               <div className="relative">
-                {/* Modern Logo Icon */}
-                <div className="w-10 h-10 bg-gradient-to-br from-wowktm-primary via-wowktm-accent to-wowktm-secondary rounded-xl rotate-12 hover:rotate-0 transition-all duration-500 shadow-lg hover:shadow-xl">
+                {/* Modern Logo Icon from Footer */}
+                <div className="w-10 h-10 bg-gradient-to-br from-wowktm-primary via-wowktm-accent to-wowktm-secondary rounded-xl rotate-12 group-hover:rotate-0 transition-all duration-500 shadow-lg group-hover:shadow-xl">
                   <div className="absolute inset-1 bg-white rounded-lg flex items-center justify-center">
                     <svg
                       viewBox="0 0 24 24"
-                      className="w-5 h-5 text-wowktm-primary hover:text-wowktm-accent transition-colors duration-300"
+                      className="w-5 h-5 text-wowktm-primary group-hover:text-wowktm-accent transition-colors duration-300"
                       fill="currentColor"
                     >
                       <path d="M12 2L2 7v10c0 5.55 3.84 9.74 9 11 5.16-1.26 9-5.45 9-11V7l-10-5z"/>
@@ -97,9 +170,9 @@ const Header = () => {
                 </div>
               </div>
               
-              {/* Brand Text */}
+              {/* Brand Text from Footer */}
               <div className="hidden sm:flex flex-col">
-                <span className="font-display text-lg font-bold bg-gradient-to-r from-wowktm-primary via-wowktm-accent to-wowktm-secondary bg-clip-text text-transparent hover:from-wowktm-accent hover:via-wowktm-primary hover:to-wowktm-secondary transition-all duration-500">
+                <span className="font-display text-lg font-bold bg-gradient-to-r from-wowktm-primary via-wowktm-accent to-wowktm-secondary bg-clip-text text-transparent group-hover:from-wowktm-accent group-hover:via-wowktm-primary group-hover:to-wowktm-secondary transition-all duration-500">
                   WoWKTM
                 </span>
                 <span className="font-body text-xs text-gray-400 -mt-1 tracking-wider">
@@ -108,27 +181,97 @@ const Header = () => {
               </div>
             </Link>
 
-            {/* Desktop Navigation */}
-            <nav className="hidden md:flex items-center space-x-8">
-              <Link to="/" className="text-gray-600 hover:text-wowktm-primary transition-colors font-medium">
-                Home
-              </Link>
-              <Link to="/products" className="text-gray-600 hover:text-wowktm-primary transition-colors font-medium">
-                Products
-              </Link>
-              <Link to="/categories" className="text-gray-600 hover:text-wowktm-primary transition-colors font-medium">
-                Categories
-              </Link>
-              <Link to="/deals" className="text-gray-600 hover:text-wowktm-primary transition-colors font-medium">
-                Deals
-              </Link>
-              <Link to="/seller-registration" className="text-gray-600 hover:text-wowktm-primary transition-colors font-medium">
-                Sell
-              </Link>
+            {/* Desktop Navigation - Modern Curved Design */}
+            <nav className="hidden md:flex items-center space-x-6">
+              {/* All Categories Dropdown */}
+              <div 
+                ref={categoryRef}
+                className="relative group"
+                onMouseEnter={() => setIsCategoryDropdownOpen(true)}
+                onMouseLeave={() => setIsCategoryDropdownOpen(false)}
+              >
+                <button className="flex items-center space-x-1 text-gray-700 hover:text-wowktm-primary transition-colors duration-300 font-medium text-sm px-4 py-2 rounded-full hover:bg-gradient-to-r hover:from-wowktm-primary/10 hover:to-wowktm-accent/10">
+                  <span>All Categories</span>
+                  <svg
+                    className={`w-4 h-4 transition-transform duration-200 ${isCategoryDropdownOpen ? 'rotate-180' : ''}`}
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7" />
+                  </svg>
+                </button>
+
+                {/* Categories Mega Menu */}
+                <AnimatePresence>
+                  {isCategoryDropdownOpen && (
+                    <motion.div
+                      initial={{ opacity: 0, y: 10 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      exit={{ opacity: 0, y: 10 }}
+                      transition={{ duration: 0.2 }}
+                    >
+                      <div className="absolute top-full left-0 w-96 bg-white border border-gray-200 shadow-xl rounded-lg mt-2 z-50 overflow-hidden">
+                        <div className="p-4">
+                          {/* Header */}
+                          <div className="flex items-center justify-between mb-4 pb-2 border-b border-gray-100">
+                            <h3 className="font-semibold text-gray-900 text-sm">Shop by Category</h3>
+                            <Link
+                              to="/products"
+                            className="text-wowktm-primary text-xs font-medium hover:underline"
+                          >
+                            View All →
+                          </Link>
+                        </div>
+
+                        {/* Categories Grid */}
+                        <div className="grid grid-cols-2 gap-3">
+                          {categories.map((category) => (
+                            <Link
+                              key={category.id}
+                              to={`/products?category=${category.id}`}
+                              className="flex items-center space-x-3 p-3 rounded-lg hover:bg-gray-50 transition-colors group"
+                            >
+                              <span className="text-base">{category.icon}</span>
+                              <div className="flex-1">
+                                <p className="font-medium text-gray-900 text-xs group-hover:text-wowktm-primary">
+                                  {category.name}
+                                </p>
+                                <p className="text-xs text-gray-500 mt-1">
+                                  {category.subcategories.length} subcategories
+                                </p>
+                              </div>
+                            </Link>
+                          ))}
+                        </div>
+
+                        {/* Featured Categories */}
+                        <div className="mt-4 pt-4 border-t border-gray-100">
+                          <div className="flex items-center justify-between">
+                            <span className="text-xs font-medium text-gray-700">Popular:</span>
+                            <div className="flex items-center space-x-2">
+                              <span className="px-2 py-1 bg-wowktm-primary bg-opacity-10 text-wowktm-primary rounded-full text-xs font-medium">
+                                Handmade
+                              </span>
+                              <span className="px-2 py-1 bg-red-100 text-red-600 rounded-full text-xs font-medium">
+                                Vintage
+                              </span>
+                              <span className="px-2 py-1 bg-green-100 text-green-600 rounded-full text-xs font-medium">
+                                Custom
+                              </span>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      </div>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+              </div>
             </nav>
 
-            {/* Search Bar */}
-            <div ref={searchRef} className="flex-1 max-w-2xl mx-4 relative">
+            {/* Search Bar - Modern Curved Design */}
+            <div ref={searchRef} className="flex-1 max-w-2xl mx-8 relative">
               <form onSubmit={handleSearchSubmit} className="relative">
                 <div className="relative">
                   <input
@@ -137,38 +280,19 @@ const Header = () => {
                     onChange={(e) => setSearchQuery(e.target.value)}
                     onFocus={() => setIsSearchFocused(true)}
                     placeholder="Search for products, brands, and more..."
-                    className="w-full px-4 py-2 pl-10 pr-20 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-wowktm-primary focus:border-transparent"
+                    className="w-full px-4 py-3 pl-12 pr-20 border border-gray-200 rounded-full bg-gradient-to-r from-gray-50 to-white focus:outline-none focus:ring-2 focus:ring-wowktm-primary/30 focus:border-wowktm-primary transition-all duration-300 text-sm shadow-inner hover:shadow-md"
                   />
-                  <svg className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <svg className="absolute left-4 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
                   </svg>
-                  <div className="absolute right-2 top-1/2 transform -translate-y-1/2 flex items-center space-x-1">
-                    <button
-                      type="button"
-                      onClick={() => setShowAdvancedSearch(!showAdvancedSearch)}
-                      className="p-1 text-gray-400 hover:text-wowktm-primary transition-colors"
-                      title="Advanced Search"
-                    >
-                      <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 100 4m0-4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 100 4m0-4v2m0-6V4" />
-                      </svg>
-                    </button>
-                    <button
-                      type="submit"
-                      className="bg-wowktm-primary text-white px-3 py-1 rounded-md hover:bg-wowktm-secondary transition-colors text-sm font-medium"
-                    >
-                      Search
-                    </button>
-                  </div>
+                  <button
+                    type="submit"
+                    className="absolute right-2 top-1/2 transform -translate-y-1/2 bg-wowktm-primary text-white px-3 py-1.5 rounded-full hover:bg-wowktm-accent transition-all duration-300 text-sm font-medium shadow-md hover:shadow-lg"
+                  >
+                    Search
+                  </button>
                 </div>
               </form>
-
-              {/* Advanced Search Dropdown */}
-              {showAdvancedSearch && (
-                <div className="absolute top-full left-0 right-0 mt-2 bg-white rounded-lg shadow-xl border z-50 animate-fadeIn">
-                  <AdvancedSearch onClose={() => setShowAdvancedSearch(false)} />
-                </div>
-              )}
 
               {/* Search Suggestions */}
               {isSearchFocused && searchQuery.length > 0 && (
@@ -191,26 +315,19 @@ const Header = () => {
               )}
             </div>
 
-            {/* Right side icons */}
-            <div className="flex items-center space-x-4">
-              {/* Wishlist */}
-              <Link to="/wishlist" className="p-2 text-gray-600 hover:text-wowktm-primary transition-colors">
-                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
-                </svg>
-              </Link>
-
-              {/* Cart */}
+            {/* Right side icons - Clean Text Style */}
+            <div className="flex items-center space-x-6">
+              {/* Cart - Clean Text Style */}
               <div ref={cartRef} className="relative">
                 <button
                   onClick={() => setIsCartDropdownOpen(!isCartDropdownOpen)}
-                  className="relative p-2 text-gray-600 hover:text-wowktm-primary transition-colors"
+                  className="relative flex items-center space-x-1 p-2 text-gray-700 hover:text-wowktm-primary transition-colors duration-200 text-sm font-medium"
                 >
-                  <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4m0 0L7 13m0 0l-2.5-5M7 13v6a2 2 0 002 2h6a2 2 0 002-2v-6" />
                   </svg>
                   {cartItemsCount > 0 && (
-                    <span className="absolute -top-1 -right-1 bg-wowktm-primary text-white text-xs rounded-full w-5 h-5 flex items-center justify-center font-semibold">
+                    <span className="absolute -top-1 -right-1 bg-wowktm-primary text-white text-xs rounded-full w-4 h-4 flex items-center justify-center font-semibold">
                       {cartItemsCount}
                     </span>
                   )}
@@ -223,7 +340,7 @@ const Header = () => {
                       <h3 className="text-sm font-semibold text-gray-800">Shopping Cart ({cartItemsCount})</h3>
                     </div>
                     <div className="max-h-96 overflow-y-auto">
-                      {cartItems.length === 0 ? (
+                      {items.length === 0 ? (
                         <div className="p-8 text-center">
                           <svg className="w-12 h-12 mx-auto text-gray-300 mb-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4m0 0L7 13m0 0l-2.5-5M7 13v6a2 2 0 002 2h6a2 2 0 002-2v-6" />
@@ -238,7 +355,7 @@ const Header = () => {
                           </Link>
                         </div>
                       ) : (
-                        cartItems.map((item) => (
+                        items.map((item: any) => (
                           <div key={item.id} className="p-3 border-b hover:bg-gray-50">
                             <div className="flex items-start space-x-3">
                               <img src={item.image} alt={item.name} className="w-10 h-10 rounded-lg object-cover flex-shrink-0" />
@@ -263,12 +380,12 @@ const Header = () => {
                         ))
                       )}
                     </div>
-                    {cartItems.length > 0 && (
+                    {items.length > 0 && (
                       <div className="p-3 border-t bg-gray-50">
                         <div className="flex items-center justify-between mb-3">
                           <span className="text-sm font-semibold text-gray-700">Total:</span>
                           <span className="text-base font-bold text-wowktm-primary">
-                            ${cartItems.reduce((total, item) => total + (item.price * item.quantity), 0).toFixed(2)}
+                            ${items.reduce((total: number, item: any) => total + (item.price * item.quantity), 0).toFixed(2)}
                           </span>
                         </div>
                         <Link
@@ -284,39 +401,34 @@ const Header = () => {
                 )}
               </div>
 
-              {/* Account Menu */}
+              {/* Account Menu - Clean Text Style */}
               <div ref={accountRef} className="relative">
                 <button
                   onClick={() => setIsAccountDropdownOpen(!isAccountDropdownOpen)}
-                  className="flex items-center space-x-2 p-2 text-gray-600 hover:text-wowktm-primary transition-colors"
+                  className="flex items-center space-x-1 p-2 text-gray-700 hover:text-wowktm-primary transition-colors duration-200 text-sm font-medium"
                 >
-                  {isLoggedIn ? (
-                    <div className="w-8 h-8 bg-gradient-to-r from-wowktm-primary to-wowktm-secondary rounded-full flex items-center justify-center text-white font-semibold text-sm">
-                      JD
-                    </div>
-                  ) : (
-                    <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
-                    </svg>
-                  )}
-                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7" />
+                  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
                   </svg>
+                  <span>Account</span>
                 </button>
 
                 {/* Account Dropdown */}
                 {isAccountDropdownOpen && (
                   <div className="absolute right-0 top-full mt-2 w-64 bg-white rounded-lg shadow-xl border z-50 animate-fadeIn">
-                    {isLoggedIn ? (
+                    {user ? (
                       <>
                         <div className="p-4 border-b bg-gray-50">
                           <div className="flex items-center space-x-3">
                             <div className="w-12 h-12 bg-gradient-to-r from-wowktm-primary to-wowktm-secondary rounded-full flex items-center justify-center text-white font-semibold">
-                              JD
+                              {user.firstName?.[0]}{user.lastName?.[0]}
                             </div>
-                            <div>
-                              <h3 className="font-semibold text-gray-800">John Doe</h3>
-                              <p className="text-sm text-gray-600">john.doe@email.com</p>
+                            <div className="flex-1">
+                              <div className="flex items-center gap-2">
+                                <h3 className="font-semibold text-gray-800">{user.firstName} {user.lastName}</h3>
+                                <RoleBadge role={user.role} size="sm" />
+                              </div>
+                              <p className="text-sm text-gray-600">{user.email}</p>
                             </div>
                           </div>
                         </div>
@@ -349,7 +461,7 @@ const Header = () => {
                         </div>
                         <div className="border-t py-2">
                           <button
-                            onClick={() => setIsLoggedIn(false)}
+                            onClick={() => logout()}
                             className="flex items-center space-x-3 px-4 py-2 hover:bg-gray-50 w-full text-left text-red-600"
                           >
                             <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -379,6 +491,17 @@ const Header = () => {
                   </div>
                 )}
               </div>
+
+              {/* Become a Seller */}
+              <Link 
+                to="/seller-registration" 
+                className="flex items-center space-x-1 p-2 text-gray-700 hover:text-wowktm-primary transition-colors duration-200 text-sm font-medium group"
+              >
+                <svg className="w-4 h-4 group-hover:scale-110 transition-transform duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+                </svg>
+                <span className="text-xs">Become a Seller</span>
+              </Link>
             </div>
           </div>
         </div>
@@ -393,27 +516,18 @@ const Header = () => {
           />
           <div className="fixed left-0 top-0 bottom-0 w-80 bg-white z-50 md:hidden shadow-xl animate-slideInLeft">
             <div className="flex items-center justify-between p-4 border-b">
-              <div className="flex items-center space-x-2">
-                <div className="w-8 h-8 bg-gradient-to-br from-wowktm-primary via-wowktm-accent to-wowktm-secondary rounded-xl flex items-center justify-center">
-                  <div className="absolute inset-1 bg-white rounded-lg flex items-center justify-center">
-                    <svg
-                      viewBox="0 0 24 24"
-                      className="w-4 h-4 text-wowktm-primary"
-                      fill="currentColor"
-                    >
-                      <path d="M12 2L2 7v10c0 5.55 3.84 9.74 9 11 5.16-1.26 9-5.45 9-11V7l-10-5z"/>
-                      <path d="M9 12l2 2 4-4" stroke="white" strokeWidth="1" fill="none"/>
-                    </svg>
-                  </div>
+              <div className="flex items-center space-x-3">
+                <div className="w-10 h-10 bg-gradient-to-r from-wowktm-primary to-wowktm-secondary rounded-lg flex items-center justify-center shadow-md">
+                  <span className="text-white font-bold text-lg">W</span>
                 </div>
-                <div className="flex flex-col">
+                <div>
                   <span className="text-lg font-bold text-gray-900">WoWKTM</span>
-                  <span className="text-xs text-gray-500 -mt-1 tracking-wider">MARKETPLACE</span>
+                  <span className="block text-xs text-gray-500 font-medium -mt-1 tracking-wide">MARKETPLACE</span>
                 </div>
               </div>
               <button
                 onClick={() => setIsMobileMenuOpen(false)}
-                className="p-2 rounded-md text-gray-600 hover:text-wowktm-primary hover:bg-gray-100"
+                className="p-2 rounded-md text-gray-600 hover:text-wowktm-primary hover:bg-gray-100 transition-colors duration-200"
               >
                 <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" />
@@ -423,66 +537,36 @@ const Header = () => {
 
             <nav className="py-4">
               <Link
-                to="/"
-                onClick={() => setIsMobileMenuOpen(false)}
-                className="flex items-center px-6 py-3 text-gray-600 hover:text-wowktm-primary hover:bg-gray-50"
-              >
-                <svg className="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
-                </svg>
-                Home
-              </Link>
-              <Link
-                to="/products"
-                onClick={() => setIsMobileMenuOpen(false)}
-                className="flex items-center px-6 py-3 text-gray-600 hover:text-wowktm-primary hover:bg-gray-50"
-              >
-                <svg className="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" />
-                </svg>
-                Products
-              </Link>
-              <Link
                 to="/categories"
                 onClick={() => setIsMobileMenuOpen(false)}
-                className="flex items-center px-6 py-3 text-gray-600 hover:text-wowktm-primary hover:bg-gray-50"
+                className="flex items-center px-6 py-3 text-gray-600 hover:text-wowktm-primary hover:bg-gray-50 transition-colors duration-200"
               >
                 <svg className="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 6h16M4 10h16M4 14h16M4 18h16" />
                 </svg>
-                Categories
-              </Link>
-              <Link
-                to="/deals"
-                onClick={() => setIsMobileMenuOpen(false)}
-                className="flex items-center px-6 py-3 text-gray-600 hover:text-wowktm-primary hover:bg-gray-50"
-              >
-                <svg className="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                </svg>
-                Deals
+                All Categories
               </Link>
               <Link
                 to="/seller-registration"
                 onClick={() => setIsMobileMenuOpen(false)}
-                className="flex items-center px-6 py-3 text-gray-600 hover:text-wowktm-primary hover:bg-gray-50"
+                className="flex items-center px-6 py-3 text-gray-600 hover:text-wowktm-primary hover:bg-gray-50 transition-colors duration-200"
               >
                 <svg className="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M16 11V7a4 4 0 00-8 0v4M8 11v6h8v-6M8 11H6a2 2 0 00-2 2v6a2 2 0 002 2h12a2 2 0 002-2v-6a2 2 0 00-2-2h-2" />
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
                 </svg>
-                Sell on WoWKTM
+                Become a Seller
               </Link>
 
               <div className="mt-8 pt-6 border-t border-gray-200">
-                {isLoggedIn ? (
+                {user ? (
                   <div className="px-6">
                     <div className="flex items-center space-x-3 mb-4">
                       <div className="w-10 h-10 bg-gradient-to-r from-wowktm-primary to-wowktm-secondary rounded-full flex items-center justify-center text-white font-semibold">
-                        JD
+                        {user.firstName?.[0]}{user.lastName?.[0]}
                       </div>
                       <div>
-                        <p className="font-semibold text-gray-800">John Doe</p>
-                        <p className="text-sm text-gray-600">john.doe@email.com</p>
+                        <p className="font-semibold text-gray-800">{user.firstName} {user.lastName}</p>
+                        <p className="text-sm text-gray-600">{user.email}</p>
                       </div>
                     </div>
                     <Link to="/profile" className="flex items-center py-2 text-gray-600 hover:text-wowktm-primary">
@@ -498,7 +582,7 @@ const Header = () => {
                       My Orders
                     </Link>
                     <button
-                      onClick={() => setIsLoggedIn(false)}
+                      onClick={() => logout()}
                       className="flex items-center py-2 text-red-600 hover:text-red-700"
                     >
                       <svg className="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
