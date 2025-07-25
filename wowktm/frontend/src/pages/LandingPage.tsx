@@ -10,8 +10,10 @@ import ArtisanShowcase from '../components/ArtisanShowcase';
 import ProcessAnimation from '../components/ProcessAnimation';
 import ArtisanJourneyAnimation from '../components/ArtisanJourneyAnimation';
 import NepaliProcessAnimation from '../components/NepaliProcessAnimation';
+import { useScrollToTop } from '../hooks/useScrollToTop';
 
 const LandingPage = () => {
+  useScrollToTop();
   const { addItem } = useCart();
   const { showToast } = useToast();
 

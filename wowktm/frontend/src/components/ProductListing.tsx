@@ -839,7 +839,7 @@ const ProductListing: React.FC<ProductListingProps> = ({ category, searchQuery, 
   const displayedProducts = products.slice(startIndex, startIndex + productsPerPage);
 
   return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    <div className="w-full">
       {/* Header */}
       <div className="flex items-center justify-between mb-6">
         <div>
@@ -875,21 +875,21 @@ const ProductListing: React.FC<ProductListingProps> = ({ category, searchQuery, 
       </div>
 
       {/* Products Grid */}
-      <div className={viewMode === 'grid' ? 'grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6' : 'space-y-4'}>
+      <div className={viewMode === 'grid' ? 'grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6 gap-6' : 'space-y-4'}>
         <AnimatePresence>
           {displayedProducts.map((product, index) => (
-            <motion.div
-              key={product.id}
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -20 }}
-              transition={{ duration: 0.3, delay: index * 0.05 }}
-            >
-              <div className={`bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition-all duration-300 group ${
-                viewMode === 'list' ? 'flex' : ''
-              }`}>
+            <div key={product.id} className="h-full">
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -20 }}
+                transition={{ duration: 0.3, delay: index * 0.05 }}
+              >
+                <div className={`bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition-all duration-300 group h-full flex flex-col ${
+                  viewMode === 'list' ? 'flex-row h-auto' : ''
+                }`}>
               {/* Product Image */}
-              <div className={`relative ${viewMode === 'list' ? 'w-48 h-48' : 'w-full h-56'}`}>
+              <div className={`relative ${viewMode === 'list' ? 'w-48 h-48 flex-shrink-0' : 'w-full h-48'}`}>
                 <OptimizedImage
                   src={product.image}
                   alt={product.name}
@@ -957,83 +957,95 @@ const ProductListing: React.FC<ProductListingProps> = ({ category, searchQuery, 
               </div>
 
               {/* Product Info */}
-              <div className={`p-4 ${viewMode === 'list' ? 'flex-1' : ''}`}>
-                <div className="flex items-start justify-between mb-2">
-                  <h3 className="text-sm font-semibold text-gray-900 line-clamp-2 group-hover:text-wowktm-primary">
-                    <Link to={`/product/${product.id}`}>
-                      {product.name}
-                    </Link>
-                  </h3>
-                </div>
+              <div className={`p-4 flex flex-col justify-between ${viewMode === 'list' ? 'flex-1' : 'flex-1'}`}>
+                <div className="flex-1">
+                  <div className="flex items-start justify-between mb-2">
+                    <h3 className="text-sm font-semibold text-gray-900 group-hover:text-wowktm-primary min-h-[2.5rem] overflow-hidden" 
+                        style={{
+                          display: '-webkit-box',
+                          WebkitLineClamp: 2,
+                          WebkitBoxOrient: 'vertical',
+                          lineHeight: '1.25rem'
+                        }}>
+                      <Link to={`/product/${product.id}`}>
+                        {product.name}
+                      </Link>
+                    </h3>
+                  </div>
 
-                <p className="text-xs text-gray-600 mb-2">by {product.seller}</p>
+                  <p className="text-xs text-gray-600 mb-2">by {product.seller}</p>
 
-                {/* Rating */}
-                <div className="flex items-center space-x-1 mb-2">
-                  <div className="flex">{renderStars(product.rating)}</div>
-                  <span className="text-xs text-gray-600">({product.reviews})</span>
-                </div>
+                  {/* Rating */}
+                  <div className="flex items-center space-x-1 mb-2">
+                    <div className="flex">{renderStars(product.rating)}</div>
+                    <span className="text-xs text-gray-600">({product.reviews})</span>
+                  </div>
 
-                {/* Tags */}
-                <div className="flex flex-wrap gap-1 mb-3">
-                  {product.tags.slice(0, 3).map((tag, i) => (
-                    <span key={i} className="px-2 py-1 bg-gray-100 text-gray-600 text-xs rounded">
-                      {tag}
-                    </span>
-                  ))}
-                </div>
+                  {/* Tags */}
+                  <div className="flex flex-wrap gap-1 mb-3 min-h-[1.5rem]">
+                    {product.tags.slice(0, 3).map((tag, i) => (
+                      <span key={i} className="px-2 py-1 bg-gray-100 text-gray-600 text-xs rounded">
+                        {tag}
+                      </span>
+                    ))}
+                  </div>
 
-                {/* Features */}
-                <div className="flex items-center space-x-2 mb-3 text-xs">
-                  {product.isHandmade && (
-                    <span className="flex items-center text-green-600">
-                      <svg className="w-3 h-3 mr-1" fill="currentColor" viewBox="0 0 20 20">
-                        <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
-                      </svg>
-                      Handmade
-                    </span>
-                  )}
-                  {product.freeShipping && (
-                    <span className="flex items-center text-blue-600">
-                      <svg className="w-3 h-3 mr-1" fill="currentColor" viewBox="0 0 20 20">
-                        <path d="M8 16.5a1.5 1.5 0 11-3 0 1.5 1.5 0 013 0zM15 16.5a1.5 1.5 0 11-3 0 1.5 1.5 0 013 0z" />
-                        <path d="M3 4a1 1 0 00-1 1v10a1 1 0 001 1h1.05a2.5 2.5 0 014.9 0H10a1 1 0 001-1V5a1 1 0 00-1-1H3zM14 7a1 1 0 00-1 1v6.05A2.5 2.5 0 0115.95 16H17a1 1 0 001-1v-5a1 1 0 00-.293-.707L16 7.586A1 1 0 0015.414 7H14z" />
-                      </svg>
-                      Free shipping
-                    </span>
-                  )}
-                </div>
-
-                {/* Price */}
-                <div className="flex items-center justify-between">
-                  <div className="flex items-center space-x-2">
-                    <span className="text-base font-bold text-gray-900">
-                      ${product.price.toFixed(2)}
-                    </span>
-                    {product.originalPrice && (
-                      <span className="text-xs text-gray-500 line-through">
-                        ${product.originalPrice.toFixed(2)}
+                  {/* Features */}
+                  <div className="flex items-center space-x-2 mb-3 text-xs min-h-[1.5rem]">
+                    {product.isHandmade && (
+                      <span className="flex items-center text-green-600">
+                        <svg className="w-3 h-3 mr-1" fill="currentColor" viewBox="0 0 20 20">
+                          <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
+                        </svg>
+                        Handmade
+                      </span>
+                    )}
+                    {product.freeShipping && (
+                      <span className="flex items-center text-blue-600">
+                        <svg className="w-3 h-3 mr-1" fill="currentColor" viewBox="0 0 20 20">
+                          <path d="M8 16.5a1.5 1.5 0 11-3 0 1.5 1.5 0 013 0zM15 16.5a1.5 1.5 0 11-3 0 1.5 1.5 0 013 0z" />
+                          <path d="M3 4a1 1 0 00-1 1v10a1 1 0 001 1h1.05a2.5 2.5 0 014.9 0H10a1 1 0 001-1V5a1 1 0 00-1-1H3zM14 7a1 1 0 00-1 1v6.05A2.5 2.5 0 0115.95 16H17a1 1 0 001-1v-5a1 1 0 00-.293-.707L16 7.586A1 1 0 0015.414 7H14z" />
+                        </svg>
+                        Free shipping
                       </span>
                     )}
                   </div>
-                  
-                  {viewMode === 'list' && (
-                    <button
-                      onClick={() => handleAddToCart(product)}
-                      className="bg-wowktm-primary text-white px-4 py-2 rounded-lg hover:bg-wowktm-secondary transition-colors"
-                    >
-                      Add to Cart
-                    </button>
-                  )}
                 </div>
 
-                {/* Ships from */}
-                <p className="text-xs text-gray-500 mt-2">
-                  Ships from {product.shipsFrom} • {product.processedIn}
-                </p>
+                {/* Bottom section - Price and shipping info */}
+                <div className="mt-auto">
+                  {/* Price */}
+                  <div className="flex items-center justify-between mb-2">
+                    <div className="flex items-center space-x-2">
+                      <span className="text-base font-bold text-gray-900">
+                        ${product.price.toFixed(2)}
+                      </span>
+                      {product.originalPrice && (
+                        <span className="text-xs text-gray-500 line-through">
+                          ${product.originalPrice.toFixed(2)}
+                        </span>
+                      )}
+                    </div>
+                    
+                    {viewMode === 'list' && (
+                      <button
+                        onClick={() => handleAddToCart(product)}
+                        className="bg-wowktm-primary text-white px-4 py-2 rounded-lg hover:bg-wowktm-secondary transition-colors"
+                      >
+                        Add to Cart
+                      </button>
+                    )}
+                  </div>
+
+                  {/* Ships from */}
+                  <p className="text-xs text-gray-500">
+                    Ships from {product.shipsFrom} • {product.processedIn}
+                  </p>
+                </div>
+                </div>
               </div>
-              </div>
-            </motion.div>
+              </motion.div>
+            </div>
           ))}
         </AnimatePresence>
       </div>

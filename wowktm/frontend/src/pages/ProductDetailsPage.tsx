@@ -6,6 +6,7 @@ import { useToast } from '../components/ToastProvider';
 import { getProductById } from '../api/productApi';
 import { Product } from '../types/product';
 import { DeliveryOptions } from '../components/DeliveryBadge';
+import { useScrollToTop } from '../hooks/useScrollToTop';
 
 interface ProductDetails {
   id: number;
@@ -59,6 +60,7 @@ interface ProductDetails {
 }
 
 const ProductDetailsPage: React.FC = () => {
+  useScrollToTop();
   const { id } = useParams<{ id: string }>();
   const { addItem } = useCart();
   const { showToast } = useToast();
@@ -214,7 +216,7 @@ const ProductDetailsPage: React.FC = () => {
     <div className="min-h-screen bg-gray-50">
       {/* Breadcrumb */}
       <div className="bg-white shadow-sm">
-        <div className="container mx-auto px-4 py-3">
+        <div className="max-w-full mx-auto px-6 sm:px-8 lg:px-12 py-3">
           <nav className="flex items-center space-x-2 text-sm text-gray-600">
             <Link to="/" className="hover:text-wowktm-primary">Home</Link>
             <span>/</span>
@@ -229,7 +231,7 @@ const ProductDetailsPage: React.FC = () => {
         </div>
       </div>
 
-      <div className="container mx-auto px-4 py-8">
+      <div className="max-w-full mx-auto px-6 sm:px-8 lg:px-12 py-8">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
           {/* Product Images */}
           <div className="space-y-4">

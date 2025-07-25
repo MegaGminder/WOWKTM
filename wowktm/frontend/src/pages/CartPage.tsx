@@ -3,8 +3,10 @@ import { Link } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useToast } from '../components/ToastProvider';
 import { useCart } from '../context/CartContext';
+import { useScrollToTop } from '../hooks/useScrollToTop';
 
 const CartPage: React.FC = () => {
+  useScrollToTop();
   const { showToast } = useToast();
   const { items: cartItems, updateQuantity, removeItem, getTotalPrice, getTotalItems } = useCart();
   const [promoCode, setPromoCode] = useState('');

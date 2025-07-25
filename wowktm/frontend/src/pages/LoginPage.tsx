@@ -3,8 +3,10 @@ import { Link, useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import axiosClient from '../api/axiosClient';
 import { useToast } from '../components/ToastProvider';
+import { useScrollToTop } from '../hooks/useScrollToTop';
 
 const LoginPage = () => {
+  useScrollToTop();
   const [formData, setFormData] = useState({
     email: '',
     password: '',

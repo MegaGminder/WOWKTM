@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import { useToast } from '../components/ToastProvider';
+import { useScrollToTop } from '../hooks/useScrollToTop';
 
 interface SellerFormData {
   businessName: string;
@@ -24,6 +25,8 @@ interface SellerFormData {
 }
 
 const SellerRegistrationPage: React.FC = () => {
+  useScrollToTop();
+  
   const { showToast } = useToast();
   const [currentStep, setCurrentStep] = useState(1);
   const [isSubmitting, setIsSubmitting] = useState(false);

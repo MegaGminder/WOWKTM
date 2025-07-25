@@ -1,8 +1,11 @@
 import React, { useState } from 'react';
 import { Link, useNavigate, useSearchParams } from 'react-router-dom';
 import { useToast } from '../components/ToastProvider';
+import { useScrollToTop } from '../hooks/useScrollToTop';
 
 const ResetPasswordPage: React.FC = () => {
+  useScrollToTop();
+  
   const [searchParams] = useSearchParams();
   const [formData, setFormData] = useState({
     password: '',

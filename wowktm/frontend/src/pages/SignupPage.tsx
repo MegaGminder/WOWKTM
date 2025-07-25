@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useToast } from '../components/ToastProvider';
+import { useScrollToTop } from '../hooks/useScrollToTop';
 
 interface FormData {
   firstName: string;
@@ -13,6 +14,7 @@ interface FormData {
 }
 
 const SignupPage: React.FC = () => {
+  useScrollToTop();
   const [formData, setFormData] = useState<FormData>({
     firstName: '',
     lastName: '',

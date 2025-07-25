@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useToast } from '../components/ToastProvider';
+import { useScrollToTop } from '../hooks/useScrollToTop';
 
 interface UserProfile {
   firstName: string;
@@ -23,6 +24,8 @@ interface UserProfile {
 }
 
 const ProfilePage: React.FC = () => {
+  useScrollToTop();
+  
   const [activeTab, setActiveTab] = useState<'profile' | 'security' | 'preferences'>('profile');
   const [isEditing, setIsEditing] = useState(false);
   const [loading, setLoading] = useState(false);
