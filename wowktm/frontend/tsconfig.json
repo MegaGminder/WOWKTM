@@ -16,6 +16,5 @@
     "noEmit": true,
     "jsx": "react-jsx"   // <--- This is the magic line!
   },
-  "include": ["src"],
-  "references": [{ "path": "./tsconfig.node.json" }]
+  "include": ["src"]
 }

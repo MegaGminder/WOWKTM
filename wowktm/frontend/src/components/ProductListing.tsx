@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 import OptimizedImage from './OptimizedImage';
 import { useCart } from '../context/CartContext';
 import { useToast } from './ToastProvider';
+import { getDummyProducts, Product as DummyProduct } from '../data/dummyData';
 
 interface Product {
   id: string;
@@ -62,730 +63,118 @@ const ProductListing: React.FC<ProductListingProps> = ({ category, searchQuery, 
   const { showToast } = useToast();
 
   // Comprehensive Etsy-style product database
-  const allProducts: Product[] = [
-    // Jewelry & Accessories
-    {
-      id: 'j001',
-      name: 'Handmade Sterling Silver Moon Phase Necklace',
-      price: 89.99,
-      originalPrice: 129.99,
-      image: 'https://images.unsplash.com/photo-1515562141207-7a88fb7ce338?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&h=400&q=80',
-      images: [
-        'https://images.unsplash.com/photo-1515562141207-7a88fb7ce338?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&h=400&q=80',
-        'https://images.unsplash.com/photo-1506630448388-4e683c67ddb0?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&h=400&q=80'
-      ],
-      seller: 'MoonCraftStudio',
-      rating: 4.9,
-      reviews: 847,
-      badge: 'Bestseller',
-      inStock: true,
-      category: 'Jewelry & Accessories',
-      subcategory: 'Necklaces',
-      description: 'Handcrafted sterling silver necklace featuring detailed moon phases. Each piece is unique and made to order.',
-      tags: ['handmade', 'sterling silver', 'moon', 'celestial', 'bohemian'],
-      isHandmade: true,
-      isVintage: false,
-      isCustomizable: true,
-      materials: ['Sterling Silver', 'Chain'],
-      shipsFrom: 'Portland, OR',
-      processedIn: '1-3 business days',
-      freeShipping: true,
-      bestseller: true,
-      onSale: true
-    },
-    {
-      id: 'j002',
-      name: 'Vintage Art Deco Emerald Ring',
-      price: 345.00,
-      image: 'https://images.unsplash.com/photo-1605100804763-247f67b3557e?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&h=400&q=80',
-      images: [
-        'https://images.unsplash.com/photo-1605100804763-247f67b3557e?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&h=400&q=80'
-      ],
-      seller: 'VintageGemsCollective',
-      rating: 4.8,
-      reviews: 234,
-      badge: 'Vintage',
-      inStock: true,
-      category: 'Jewelry & Accessories',
-      subcategory: 'Rings',
-      description: 'Stunning 1920s Art Deco emerald ring with intricate platinum setting. Authenticated vintage piece.',
-      tags: ['vintage', '1920s', 'art deco', 'emerald', 'platinum'],
-      isHandmade: false,
-      isVintage: true,
-      isCustomizable: false,
-      materials: ['Platinum', 'Emerald', 'Diamond Accents'],
-      shipsFrom: 'New York, NY',
-      processedIn: '1-2 business days',
-      freeShipping: true,
-      featured: true
-    },
-    {
-      id: 'j003',
-      name: 'Custom Wire Wrapped Crystal Pendant',
-      price: 125.50,
-      image: 'https://images.unsplash.com/photo-1506630448388-4e683c67ddb0?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&h=400&q=80',
-      images: [
-        'https://images.unsplash.com/photo-1506630448388-4e683c67ddb0?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&h=400&q=80'
-      ],
-      seller: 'CrystalHealingCraft',
-      rating: 4.7,
-      reviews: 456,
-      inStock: true,
-      category: 'Jewelry & Accessories',
-      subcategory: 'Pendants',
-      description: 'Beautiful wire-wrapped crystal pendant. Choose your crystal for personalized healing properties.',
-      tags: ['crystal', 'wire wrapped', 'healing', 'custom', 'spiritual'],
-      isHandmade: true,
-      isVintage: false,
-      isCustomizable: true,
-      materials: ['Copper Wire', 'Natural Crystals'],
-      shipsFrom: 'Boulder, CO',
-      processedIn: '3-5 business days',
-      freeShipping: false,
-      newArrival: true
-    },
-    {
-      id: 'j004',
-      name: 'Handcrafted Leather Bracelet with Compass',
-      price: 45.99,
-      image: 'https://images.unsplash.com/photo-1535632787350-4e68ef0ac584?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&h=400&q=80',
-      images: [
-        'https://images.unsplash.com/photo-1535632787350-4e68ef0ac584?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&h=400&q=80'
-      ],
-      seller: 'AdventureLeatherCo',
-      rating: 4.6,
-      reviews: 189,
-      inStock: true,
-      category: 'Jewelry & Accessories',
-      subcategory: 'Bracelets',
-      description: 'Rugged leather bracelet with working compass charm. Perfect for outdoor enthusiasts.',
-      tags: ['leather', 'compass', 'adventure', 'outdoor', 'rustic'],
-      isHandmade: true,
-      isVintage: false,
-      isCustomizable: true,
-      materials: ['Genuine Leather', 'Brass Compass', 'Stainless Steel'],
-      shipsFrom: 'Montana',
-      processedIn: '1-3 business days',
-      freeShipping: false
-    },
-
-    // Clothing & Shoes
-    {
-      id: 'c001',
-      name: 'Vintage 1970s Bohemian Maxi Dress',
-      price: 78.99,
-      originalPrice: 95.00,
-      image: 'https://images.unsplash.com/photo-1490481651871-ab68de25d43d?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&h=400&q=80',
-      images: [
-        'https://images.unsplash.com/photo-1490481651871-ab68de25d43d?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&h=400&q=80'
-      ],
-      seller: 'VintageBohoCloset',
-      rating: 4.8,
-      reviews: 123,
-      badge: 'Vintage',
-      inStock: true,
-      category: 'Clothing & Shoes',
-      subcategory: 'Dresses',
-      description: 'Authentic 1970s bohemian maxi dress with bell sleeves and paisley print. Size Medium.',
-      tags: ['vintage', '1970s', 'bohemian', 'maxi dress', 'bell sleeves'],
-      isHandmade: false,
-      isVintage: true,
-      isCustomizable: false,
-      materials: ['Cotton', 'Polyester Blend'],
-      shipsFrom: 'San Francisco, CA',
-      processedIn: '1-2 business days',
-      freeShipping: true,
-      onSale: true
-    },
-    {
-      id: 'c002',
-      name: 'Handmade Alpaca Wool Sweater',
-      price: 165.00,
-      image: 'https://images.unsplash.com/photo-1434389677669-e08b4cac3105?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&h=400&q=80',
-      images: [
-        'https://images.unsplash.com/photo-1434389677669-e08b4cac3105?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&h=400&q=80'
-      ],
-      seller: 'AndesMountainKnits',
-      rating: 4.9,
-      reviews: 67,
-      badge: 'Handmade',
-      inStock: true,
-      category: 'Clothing & Shoes',
-      subcategory: 'Sweaters',
-      description: 'Luxuriously soft alpaca wool sweater, hand-knitted by artisans in Peru. Custom sizing available.',
-      tags: ['alpaca wool', 'handmade', 'peru', 'luxury', 'warm'],
-      isHandmade: true,
-      isVintage: false,
-      isCustomizable: true,
-      materials: ['100% Alpaca Wool'],
-      shipsFrom: 'Lima, Peru',
-      processedIn: '2-4 weeks',
-      freeShipping: true,
-      featured: true
-    },
-    {
-      id: 'c003',
-      name: 'Custom Embroidered Denim Jacket',
-      price: 89.50,
-      image: 'https://images.unsplash.com/photo-1551028719-00167b16eac5?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&h=400&q=80',
-      images: [
-        'https://images.unsplash.com/photo-1551028719-00167b16eac5?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&h=400&q=80'
-      ],
-      seller: 'CustomStitchStudio',
-      rating: 4.7,
-      reviews: 298,
-      inStock: true,
-      category: 'Clothing & Shoes',
-      subcategory: 'Jackets',
-      description: 'Vintage denim jacket with custom embroidery. Choose your design or send us your own artwork.',
-      tags: ['denim', 'embroidery', 'custom', 'vintage', 'personalized'],
-      isHandmade: true,
-      isVintage: false,
-      isCustomizable: true,
-      materials: ['Denim', 'Embroidery Thread'],
-      shipsFrom: 'Austin, TX',
-      processedIn: '1-2 weeks',
-      freeShipping: false,
-      bestseller: true
-    },
-    {
-      id: 'c004',
-      name: 'Handcrafted Leather Ankle Boots',
-      price: 220.00,
-      image: 'https://images.unsplash.com/photo-1549298916-b41d501d3772?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&h=400&q=80',
-      images: [
-        'https://images.unsplash.com/photo-1549298916-b41d501d3772?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&h=400&q=80'
-      ],
-      seller: 'ArtisanLeatherworks',
-      rating: 4.8,
-      reviews: 156,
-      badge: 'Handmade',
-      inStock: true,
-      category: 'Clothing & Shoes',
-      subcategory: 'Shoes',
-      description: 'Hand-stitched leather ankle boots made from premium Italian leather. Built to last a lifetime.',
-      tags: ['leather', 'handmade', 'boots', 'italian leather', 'durable'],
-      isHandmade: true,
-      isVintage: false,
-      isCustomizable: true,
-      materials: ['Italian Leather', 'Vibram Sole'],
-      shipsFrom: 'Florence, Italy',
-      processedIn: '3-4 weeks',
-      freeShipping: true,
-      featured: true
-    },
-
-    // Home & Living
-    {
-      id: 'h001',
-      name: 'Handmade Ceramic Vase Collection',
-      price: 125.99,
-      image: 'https://images.unsplash.com/photo-1578662996442-48f60103fc96?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&h=400&q=80',
-      images: [
-        'https://images.unsplash.com/photo-1578662996442-48f60103fc96?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&h=400&q=80'
-      ],
-      seller: 'ClayArtStudio',
-      rating: 4.9,
-      reviews: 234,
-      badge: 'Handmade',
-      inStock: true,
-      category: 'Home & Living',
-      subcategory: 'Vases',
-      description: 'Set of 3 handmade ceramic vases with unique glazing. Each piece is one-of-a-kind.',
-      tags: ['ceramic', 'handmade', 'vases', 'home decor', 'pottery'],
-      isHandmade: true,
-      isVintage: false,
-      isCustomizable: true,
-      materials: ['Ceramic', 'Glaze'],
-      shipsFrom: 'Portland, OR',
-      processedIn: '1-2 weeks',
-      freeShipping: true,
-      bestseller: true
-    },
-    {
-      id: 'h002',
-      name: 'Macrame Wall Hanging with Crystals',
-      price: 65.00,
-      image: 'https://images.unsplash.com/photo-1586023492125-27b2c045efd7?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&h=400&q=80',
-      images: [
-        'https://images.unsplash.com/photo-1586023492125-27b2c045efd7?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&h=400&q=80'
-      ],
-      seller: 'BohoHomeDesigns',
-      rating: 4.7,
-      reviews: 189,
-      inStock: true,
-      category: 'Home & Living',
-      subcategory: 'Wall Decor',
-      description: 'Beautiful macrame wall hanging featuring natural crystals and driftwood. Bohemian style.',
-      tags: ['macrame', 'crystals', 'bohemian', 'wall hanging', 'natural'],
-      isHandmade: true,
-      isVintage: false,
-      isCustomizable: true,
-      materials: ['Cotton Cord', 'Natural Crystals', 'Driftwood'],
-      shipsFrom: 'Santa Fe, NM',
-      processedIn: '3-5 business days',
-      freeShipping: false,
-      newArrival: true
-    },
-    {
-      id: 'h003',
-      name: 'Vintage Mid-Century Coffee Table',
-      price: 450.00,
-      originalPrice: 650.00,
-      image: 'https://images.unsplash.com/photo-1586023492125-27b2c045efd7?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&h=400&q=80',
-      images: [
-        'https://images.unsplash.com/photo-1586023492125-27b2c045efd7?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&h=400&q=80'
-      ],
-      seller: 'ModCenturyFinds',
-      rating: 4.8,
-      reviews: 67,
-      badge: 'Vintage',
-      inStock: true,
-      category: 'Home & Living',
-      subcategory: 'Furniture',
-      description: 'Authentic 1960s walnut coffee table with hairpin legs. Professionally restored.',
-      tags: ['vintage', 'mid-century', 'walnut', 'coffee table', '1960s'],
-      isHandmade: false,
-      isVintage: true,
-      isCustomizable: false,
-      materials: ['Walnut Wood', 'Steel Legs'],
-      shipsFrom: 'Los Angeles, CA',
-      processedIn: '3-5 business days',
-      freeShipping: true,
-      onSale: true,
-      featured: true
-    },
-    {
-      id: 'h004',
-      name: 'Hand-Carved Wooden Serving Board',
-      price: 85.50,
-      image: 'https://images.unsplash.com/photo-1449824913935-59a10b8d2000?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&h=400&q=80',
-      images: [
-        'https://images.unsplash.com/photo-1449824913935-59a10b8d2000?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&h=400&q=80'
-      ],
-      seller: 'WoodcraftArtisans',
-      rating: 4.9,
-      reviews: 456,
-      badge: 'Handmade',
-      inStock: true,
-      category: 'Home & Living',
-      subcategory: 'Kitchen & Dining',
-      description: 'Large serving board hand-carved from sustainable hardwood. Perfect for entertaining.',
-      tags: ['wood', 'handmade', 'serving board', 'sustainable', 'kitchen'],
-      isHandmade: true,
-      isVintage: false,
-      isCustomizable: true,
-      materials: ['Hardwood', 'Food-Safe Oil'],
-      shipsFrom: 'Vermont',
-      processedIn: '1-2 weeks',
-      freeShipping: false,
-      bestseller: true
-    },
-
-    // Art & Collectibles
-    {
-      id: 'a001',
-      name: 'Original Watercolor Landscape Painting',
-      price: 275.00,
-      image: 'https://images.unsplash.com/photo-1541961017774-22349e4a1262?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&h=400&q=80',
-      images: [
-        'https://images.unsplash.com/photo-1541961017774-22349e4a1262?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&h=400&q=80'
-      ],
-      seller: 'NatureArtStudio',
-      rating: 4.9,
-      reviews: 89,
-      badge: 'Original Art',
-      inStock: true,
-      category: 'Art & Collectibles',
-      subcategory: 'Paintings',
-      description: 'Original watercolor painting of mountain landscape. Signed and dated by the artist.',
-      tags: ['watercolor', 'landscape', 'original', 'mountain', 'nature'],
-      isHandmade: true,
-      isVintage: false,
-      isCustomizable: false,
-      materials: ['Watercolor Paint', 'Watercolor Paper'],
-      shipsFrom: 'Asheville, NC',
-      processedIn: '1-3 business days',
-      freeShipping: true,
-      featured: true
-    },
-    {
-      id: 'a002',
-      name: 'Vintage 1960s Record Collection',
-      price: 189.99,
-      image: 'https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&h=400&q=80',
-      images: [
-        'https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&h=400&q=80'
-      ],
-      seller: 'VinylVaultCollector',
-      rating: 4.7,
-      reviews: 234,
-      badge: 'Vintage',
-      inStock: true,
-      category: 'Art & Collectibles',
-      subcategory: 'Music',
-      description: 'Curated collection of 1960s vinyl records including The Beatles, Bob Dylan, and more classics.',
-      tags: ['vinyl', '1960s', 'beatles', 'bob dylan', 'vintage music'],
-      isHandmade: false,
-      isVintage: true,
-      isCustomizable: false,
-      materials: ['Vinyl Records'],
-      shipsFrom: 'Detroit, MI',
-      processedIn: '1-2 business days',
-      freeShipping: true,
-      bestseller: true
-    },
-    {
-      id: 'a003',
-      name: 'Hand-Blown Glass Sculpture',
-      price: 320.00,
-      image: 'https://images.unsplash.com/photo-1513475382585-d06e58bcb0e0?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&h=400&q=80',
-      images: [
-        'https://images.unsplash.com/photo-1513475382585-d06e58bcb0e0?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&h=400&q=80'
-      ],
-      seller: 'GlassArtMasters',
-      rating: 4.8,
-      reviews: 67,
-      badge: 'Handmade',
-      inStock: true,
-      category: 'Art & Collectibles',
-      subcategory: 'Sculpture',
-      description: 'Unique hand-blown glass sculpture with swirling colors. Each piece is completely unique.',
-      tags: ['glass', 'sculpture', 'handmade', 'art', 'unique'],
-      isHandmade: true,
-      isVintage: false,
-      isCustomizable: false,
-      materials: ['Borosilicate Glass'],
-      shipsFrom: 'Venice, Italy',
-      processedIn: '2-3 weeks',
-      freeShipping: true,
-      featured: true
-    },
-
-    // Wedding & Party
-    {
-      id: 'w001',
-      name: 'Custom Wedding Invitation Suite',
-      price: 150.00,
-      image: 'https://images.unsplash.com/photo-1519741497674-611481863552?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&h=400&q=80',
-      images: [
-        'https://images.unsplash.com/photo-1519741497674-611481863552?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&h=400&q=80'
-      ],
-      seller: 'ElegantPaperDesigns',
-      rating: 4.9,
-      reviews: 345,
-      badge: 'Custom',
-      inStock: true,
-      category: 'Wedding & Party',
-      subcategory: 'Invitations',
-      description: 'Beautiful custom wedding invitation suite with RSVP cards and envelopes. Fully customizable.',
-      tags: ['wedding', 'invitations', 'custom', 'elegant', 'paper'],
-      isHandmade: true,
-      isVintage: false,
-      isCustomizable: true,
-      materials: ['Premium Paper', 'Gold Foil'],
-      shipsFrom: 'Boston, MA',
-      processedIn: '1-2 weeks',
-      freeShipping: false,
-      bestseller: true
-    },
-    {
-      id: 'w002',
-      name: 'Rustic Wedding Centerpieces Set of 6',
-      price: 89.99,
-      image: 'https://images.unsplash.com/photo-1464366400600-7168b8af9bc3?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&h=400&q=80',
-      images: [
-        'https://images.unsplash.com/photo-1464366400600-7168b8af9bc3?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&h=400&q=80'
-      ],
-      seller: 'RusticWeddingDecor',
-      rating: 4.7,
-      reviews: 156,
-      inStock: true,
-      category: 'Wedding & Party',
-      subcategory: 'Decorations',
-      description: 'Set of 6 rustic centerpieces with mason jars, burlap, and dried flowers. Perfect for country weddings.',
-      tags: ['rustic', 'centerpieces', 'mason jars', 'burlap', 'country'],
-      isHandmade: true,
-      isVintage: false,
-      isCustomizable: true,
-      materials: ['Mason Jars', 'Burlap', 'Dried Flowers'],
-      shipsFrom: 'Nashville, TN',
-      processedIn: '3-5 business days',
-      freeShipping: true,
-      newArrival: true
-    },
-
-    // Toys & Games
-    {
-      id: 't001',
-      name: 'Handcrafted Wooden Train Set',
-      price: 125.50,
-      image: 'https://images.unsplash.com/photo-1558877385-161e9d35d2f3?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&h=400&q=80',
-      images: [
-        'https://images.unsplash.com/photo-1558877385-161e9d35d2f3?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&h=400&q=80'
-      ],
-      seller: 'WoodenToyCrafters',
-      rating: 4.8,
-      reviews: 234,
-      badge: 'Handmade',
-      inStock: true,
-      category: 'Toys & Entertainment',
-      subcategory: 'Toys',
-      description: 'Beautiful handcrafted wooden train set with locomotive and 5 cars. Safe for children 3+.',
-      tags: ['wooden', 'train', 'handmade', 'children', 'educational'],
-      isHandmade: true,
-      isVintage: false,
-      isCustomizable: true,
-      materials: ['Solid Wood', 'Non-toxic Paint'],
-      shipsFrom: 'Vermont',
-      processedIn: '1-2 weeks',
-      freeShipping: false,
-      bestseller: true
-    },
-    {
-      id: 't002',
-      name: 'Vintage Board Game Collection',
-      price: 75.00,
-      image: 'https://images.unsplash.com/photo-1606092195730-5d7b9af1efc5?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&h=400&q=80',
-      images: [
-        'https://images.unsplash.com/photo-1606092195730-5d7b9af1efc5?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&h=400&q=80'
-      ],
-      seller: 'RetroGameCollector',
-      rating: 4.6,
-      reviews: 89,
-      badge: 'Vintage',
-      inStock: true,
-      category: 'Toys & Entertainment',
-      subcategory: 'Games',
-      description: 'Collection of classic board games from the 1970s-80s including Monopoly, Scrabble, and Risk.',
-      tags: ['vintage', 'board games', '1970s', '1980s', 'classic'],
-      isHandmade: false,
-      isVintage: true,
-      isCustomizable: false,
-      materials: ['Cardboard', 'Plastic Pieces'],
-      shipsFrom: 'Chicago, IL',
-      processedIn: '1-2 business days',
-      freeShipping: false
-    },
-
-    // Pet Supplies
-    {
-      id: 'p001',
-      name: 'Custom Pet Portrait Oil Painting',
-      price: 180.00,
-      image: 'https://images.unsplash.com/photo-1587300003388-59208cc962cb?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&h=400&q=80',
-      images: [
-        'https://images.unsplash.com/photo-1587300003388-59208cc962cb?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&h=400&q=80'
-      ],
-      seller: 'PetPortraitArtist',
-      rating: 4.9,
-      reviews: 456,
-      badge: 'Custom',
-      inStock: true,
-      category: 'Pet Supplies',
-      subcategory: 'Art',
-      description: 'Custom oil painting portrait of your beloved pet. Send us a photo and well create a masterpiece.',
-      tags: ['custom', 'pet portrait', 'oil painting', 'personalized', 'art'],
-      isHandmade: true,
-      isVintage: false,
-      isCustomizable: true,
-      materials: ['Oil Paint', 'Canvas'],
-      shipsFrom: 'Philadelphia, PA',
-      processedIn: '2-4 weeks',
-      freeShipping: true,
-      featured: true
-    },
-    {
-      id: 'p002',
-      name: 'Handmade Leather Dog Collar',
-      price: 35.99,
-      image: 'https://images.unsplash.com/photo-1601758228041-f3b2795255f1?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&h=400&q=80',
-      images: [
-        'https://images.unsplash.com/photo-1601758228041-f3b2795255f1?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&h=400&q=80'
-      ],
-      seller: 'PetLeatherGoods',
-      rating: 4.7,
-      reviews: 234,
-      badge: 'Handmade',
-      inStock: true,
-      category: 'Pet Supplies',
-      subcategory: 'Accessories',
-      description: 'Premium leather dog collar with brass hardware. Available in multiple sizes and colors.',
-      tags: ['leather', 'dog collar', 'handmade', 'brass', 'premium'],
-      isHandmade: true,
-      isVintage: false,
-      isCustomizable: true,
-      materials: ['Genuine Leather', 'Brass Hardware'],
-      shipsFrom: 'Denver, CO',
-      processedIn: '3-5 business days',
-      freeShipping: false,
-      bestseller: true
-    },
-
-    // Additional products for better filtering and pagination
-    {
-      id: 'j005',
-      name: 'Vintage Pearl Drop Earrings',
-      price: 65.00,
-      image: 'https://images.unsplash.com/photo-1617038220319-276d3cfab638?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&h=400&q=80',
-      images: ['https://images.unsplash.com/photo-1617038220319-276d3cfab638?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&h=400&q=80'],
-      seller: 'ClassicPearlCo',
-      rating: 4.8,
-      reviews: 123,
-      badge: 'Vintage',
-      inStock: true,
-      category: 'Jewelry & Accessories',
-      subcategory: 'Earrings',
-      description: '1950s vintage pearl drop earrings with gold-filled posts. Elegant and timeless.',
-      tags: ['vintage', 'pearl', 'earrings', '1950s', 'elegant'],
-      isHandmade: false,
-      isVintage: true,
-      isCustomizable: false,
-      materials: ['Natural Pearls', 'Gold-Filled Posts'],
-      shipsFrom: 'Charleston, SC',
-      processedIn: '1-2 business days',
-      freeShipping: false
-    },
-    {
-      id: 'h005',
-      name: 'Handwoven Moroccan Rug',
-      price: 380.00,
-      image: 'https://images.unsplash.com/photo-1506439773649-6e0eb8cfb237?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&h=400&q=80',
-      images: ['https://images.unsplash.com/photo-1506439773649-6e0eb8cfb237?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&h=400&q=80'],
-      seller: 'MoroccanRugCo',
-      rating: 4.9,
-      reviews: 89,
-      badge: 'Handmade',
-      inStock: true,
-      category: 'Home & Living',
-      subcategory: 'Rugs',
-      description: 'Authentic Moroccan rug handwoven by Berber artisans. Natural wool with traditional patterns.',
-      tags: ['moroccan', 'rug', 'handwoven', 'berber', 'wool'],
-      isHandmade: true,
-      isVintage: false,
-      isCustomizable: false,
-      materials: ['100% Wool'],
-      shipsFrom: 'Marrakech, Morocco',
-      processedIn: '2-3 weeks',
-      freeShipping: true,
-      featured: true
-    },
-    {
-      id: 'c005',
-      name: 'Vintage Band T-Shirt Collection',
-      price: 45.00,
-      image: 'https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&h=400&q=80',
-      images: ['https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&h=400&q=80'],
-      seller: 'VintageRockTees',
-      rating: 4.6,
-      reviews: 345,
-      badge: 'Vintage',
-      inStock: true,
-      category: 'Clothing & Shoes',
-      subcategory: 'T-Shirts',
-      description: 'Authentic vintage band t-shirts from the 80s and 90s. Various sizes and bands available.',
-      tags: ['vintage', 'band tshirt', '1980s', '1990s', 'rock'],
-      isHandmade: false,
-      isVintage: true,
-      isCustomizable: false,
-      materials: ['Cotton'],
-      shipsFrom: 'Seattle, WA',
-      processedIn: '1-2 business days',
-      freeShipping: false,
-      bestseller: true
-    }
-    // Add more products as needed...
-  ];
+  // Using dummy data from external file
 
   useEffect(() => {
     // Scroll to top when component loads
     window.scrollTo({ top: 0, behavior: 'smooth' });
     
-    setLoading(true);
-    
-    // Simulate API call
-    setTimeout(() => {
-      let filteredProducts = [...allProducts];
+    const loadProducts = async () => {
+      setLoading(true);
+      
+      try {
+        const result = await getDummyProducts({
+          category,
+          search: searchQuery
+        });
+        
+        // Convert dummy data to component format
+        let convertedProducts: Product[] = result.data.map(p => ({
+          id: p.id,
+          name: p.name,
+          price: p.price,
+          originalPrice: p.originalPrice,
+          image: p.imageUrl,
+          images: p.images,
+          seller: p.seller.name,
+          rating: p.rating,
+          reviews: p.reviewCount,
+          inStock: p.inStock,
+          category: p.category,
+          subcategory: p.subcategory || '',
+          description: p.description,
+          tags: p.tags,
+          isHandmade: true,
+          isVintage: false,
+          isCustomizable: false,
+          materials: ['Traditional Materials'],
+          shipsFrom: p.seller.location,
+          processedIn: '1-3 business days',
+          freeShipping: true,
+          bestseller: p.rating > 4.7,
+          newArrival: false,
+          onSale: !!p.originalPrice,
+          featured: p.rating > 4.8
+        }));
 
-      // Apply category filter
-      if (category && category !== 'All Categories') {
-        filteredProducts = filteredProducts.filter(product => 
-          product.category === category
-        );
+        // Apply additional filters
+        if (filters) {
+          if (filters.priceRange) {
+            convertedProducts = convertedProducts.filter(product =>
+              product.price >= filters.priceRange[0] && product.price <= filters.priceRange[1]
+            );
+          }
+
+          if (filters.rating > 0) {
+            convertedProducts = convertedProducts.filter(product =>
+              product.rating >= filters.rating
+            );
+          }
+
+          if (filters.inStock) {
+            convertedProducts = convertedProducts.filter(product => product.inStock);
+          }
+
+          if (filters.isHandmade) {
+            convertedProducts = convertedProducts.filter(product => product.isHandmade);
+          }
+
+          if (filters.isVintage) {
+            convertedProducts = convertedProducts.filter(product => product.isVintage);
+          }
+
+          if (filters.isCustomizable) {
+            convertedProducts = convertedProducts.filter(product => product.isCustomizable);
+          }
+
+          // Sort products
+          switch (filters.sortBy) {
+            case 'price_low':
+              convertedProducts.sort((a, b) => a.price - b.price);
+              break;
+            case 'price_high':
+              convertedProducts.sort((a, b) => b.price - a.price);
+              break;
+            case 'rating':
+              convertedProducts.sort((a, b) => b.rating - a.rating);
+              break;
+            case 'newest':
+              convertedProducts.sort((a, b) => (b.newArrival ? 1 : 0) - (a.newArrival ? 1 : 0));
+              break;
+            default: // relevance
+              convertedProducts.sort((a, b) => {
+                let scoreA = 0, scoreB = 0;
+                if (a.featured) scoreA += 3;
+                if (a.bestseller) scoreA += 2;
+                if (a.newArrival) scoreA += 1;
+                if (b.featured) scoreB += 3;
+                if (b.bestseller) scoreB += 2;
+                if (b.newArrival) scoreB += 1;
+                return scoreB - scoreA;
+              });
+          }
+        }
+        
+        setProducts(convertedProducts);
+      } catch (error) {
+        console.error('Failed to load products:', error);
+        setProducts([]);
       }
-
-      // Apply search filter
-      if (searchQuery) {
-        const query = searchQuery.toLowerCase();
-        filteredProducts = filteredProducts.filter(product =>
-          product.name.toLowerCase().includes(query) ||
-          product.description.toLowerCase().includes(query) ||
-          product.tags.some(tag => tag.toLowerCase().includes(query)) ||
-          product.seller.toLowerCase().includes(query)
-        );
-      }
-
-      // Apply additional filters
-      if (filters) {
-        if (filters.priceRange) {
-          filteredProducts = filteredProducts.filter(product =>
-            product.price >= filters.priceRange[0] && product.price <= filters.priceRange[1]
-          );
-        }
-
-        if (filters.rating > 0) {
-          filteredProducts = filteredProducts.filter(product =>
-            product.rating >= filters.rating
-          );
-        }
-
-        if (filters.inStock) {
-          filteredProducts = filteredProducts.filter(product => product.inStock);
-        }
-
-        if (filters.isHandmade) {
-          filteredProducts = filteredProducts.filter(product => product.isHandmade);
-        }
-
-        if (filters.isVintage) {
-          filteredProducts = filteredProducts.filter(product => product.isVintage);
-        }
-
-        if (filters.isCustomizable) {
-          filteredProducts = filteredProducts.filter(product => product.isCustomizable);
-        }
-
-        // Sort products
-        switch (filters.sortBy) {
-          case 'price_low':
-            filteredProducts.sort((a, b) => a.price - b.price);
-            break;
-          case 'price_high':
-            filteredProducts.sort((a, b) => b.price - a.price);
-            break;
-          case 'rating':
-            filteredProducts.sort((a, b) => b.rating - a.rating);
-            break;
-          case 'newest':
-            filteredProducts.sort((a, b) => (b.newArrival ? 1 : 0) - (a.newArrival ? 1 : 0));
-            break;
-          default: // relevance
-            filteredProducts.sort((a, b) => {
-              let scoreA = 0, scoreB = 0;
-              if (a.featured) scoreA += 3;
-              if (a.bestseller) scoreA += 2;
-              if (a.newArrival) scoreA += 1;
-              if (b.featured) scoreB += 3;
-              if (b.bestseller) scoreB += 2;
-              if (b.newArrival) scoreB += 1;
-              return scoreB - scoreA;
-            });
-        }
-      }
-
-      setProducts(filteredProducts);
+      
       setLoading(false);
-    }, 500);
+    };
+    
+    loadProducts();
   }, [category, searchQuery, filters]);
 
   const handleAddToCart = (product: Product) => {
