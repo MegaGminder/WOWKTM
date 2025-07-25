@@ -64,21 +64,21 @@ const MinimalProductCard: React.FC<MinimalProductCardProps> = ({
     switch (variant) {
       case 'spacious':
         return {
-          container: 'group relative bg-white rounded-2xl overflow-hidden transition-all duration-500 hover:shadow-xl p-8',
-          imageContainer: 'relative overflow-hidden rounded-xl mb-8',
-          contentSpacing: 'space-y-6'
+          container: 'group relative bg-white rounded-2xl overflow-hidden transition-all duration-500 hover:shadow-xl p-4 sm:p-6 lg:p-8',
+          imageContainer: 'relative overflow-hidden rounded-xl mb-4 sm:mb-6 lg:mb-8',
+          contentSpacing: 'space-y-3 sm:space-y-4 lg:space-y-6'
         };
       case 'elevated':
         return {
-          container: 'group relative bg-white rounded-3xl shadow-sm border border-gray-50 overflow-hidden transition-all duration-500 hover:shadow-2xl hover:-translate-y-1 p-6',
-          imageContainer: 'relative overflow-hidden rounded-2xl mb-6',
-          contentSpacing: 'space-y-4'
+          container: 'group relative bg-white rounded-2xl sm:rounded-3xl shadow-sm border border-gray-50 overflow-hidden transition-all duration-500 hover:shadow-2xl hover:-translate-y-1 p-3 sm:p-4 lg:p-6',
+          imageContainer: 'relative overflow-hidden rounded-lg sm:rounded-xl lg:rounded-2xl mb-3 sm:mb-4 lg:mb-6',
+          contentSpacing: 'space-y-2 sm:space-y-3 lg:space-y-4'
         };
       default: // minimal
         return {
-          container: 'group relative bg-white transition-all duration-300 hover:bg-gray-50 p-4',
-          imageContainer: 'relative overflow-hidden rounded-lg mb-4',
-          contentSpacing: 'space-y-3'
+          container: 'group relative bg-white transition-all duration-300 hover:bg-gray-50 p-2 sm:p-3 lg:p-4',
+          imageContainer: 'relative overflow-hidden rounded-md sm:rounded-lg mb-2 sm:mb-3 lg:mb-4',
+          contentSpacing: 'space-y-2 sm:space-y-2.5 lg:space-y-3'
         };
     }
   };
@@ -107,7 +107,7 @@ const MinimalProductCard: React.FC<MinimalProductCardProps> = ({
           <OptimizedImage
             src={image}
             alt={name}
-            className="w-full h-64 object-cover transition-transform duration-700 group-hover:scale-105"
+            className="w-full h-48 sm:h-56 lg:h-64 object-cover transition-transform duration-700 group-hover:scale-105"
           />
           
           {/* Floating add to cart - appears on hover with fluid motion */}
@@ -115,7 +115,7 @@ const MinimalProductCard: React.FC<MinimalProductCardProps> = ({
             onClick={handleAddToCart}
             className="absolute inset-0 flex items-center justify-center bg-black/20 backdrop-blur-sm opacity-0 group-hover:opacity-100 transition-all duration-300 hover:scale-105 active:scale-95"
           >
-            <span className="bg-white text-gray-900 px-6 py-3 rounded-full font-medium shadow-lg transform translate-y-4 group-hover:translate-y-0 transition-transform duration-300">
+            <span className="bg-white text-gray-900 px-3 py-2 sm:px-4 sm:py-2.5 lg:px-6 lg:py-3 rounded-full font-medium shadow-lg transform translate-y-4 group-hover:translate-y-0 transition-transform duration-300 text-xs sm:text-sm">
               Add to Cart
             </span>
           </button>

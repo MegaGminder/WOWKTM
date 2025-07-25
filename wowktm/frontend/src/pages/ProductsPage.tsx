@@ -38,16 +38,16 @@ const ProductsPage: React.FC = () => {
     <div className="min-h-screen bg-gray-50">
       {/* Search Bar */}
       <div className="bg-white shadow-sm border-b">
-        <div className="max-w-full mx-auto px-6 sm:px-8 lg:px-12 py-6">
+        <div className="max-w-full mx-auto px-4 sm:px-6 lg:px-8 py-4 sm:py-6">
           <AdvancedSearch />
         </div>
       </div>
 
       {/* Filters Sidebar & Products */}
-      <div className="max-w-full mx-auto px-6 sm:px-8 lg:px-12 py-8">
-        <div className="flex flex-col lg:flex-row gap-8">
+      <div className="max-w-full mx-auto px-4 sm:px-6 lg:px-8 py-4 sm:py-8">
+        <div className="flex flex-col lg:flex-row gap-4 lg:gap-8">
           {/* Filters Sidebar */}
-          <div className="lg:w-1/5 xl:w-1/6">
+          <div className="w-full lg:w-1/4 xl:w-1/5">
             <div className="bg-white rounded-xl shadow-lg p-6 sticky top-4">
               <h3 className="text-lg font-semibold text-gray-900 mb-4">Filters</h3>
               
@@ -184,7 +184,7 @@ const ProductsPage: React.FC = () => {
           </div>
 
           {/* Products List */}
-          <div className="lg:w-4/5 xl:w-5/6">
+          <div className="w-full lg:w-3/4 xl:w-4/5">
             <ProductListing 
               category={category || undefined}
               searchQuery={searchQuery || undefined}

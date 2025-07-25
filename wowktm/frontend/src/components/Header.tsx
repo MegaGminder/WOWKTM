@@ -63,8 +63,8 @@ const Header = () => {
   return (
     <>
       <header className="sticky top-0 z-50 bg-white shadow-sm border-b">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex items-center justify-between h-16">
+        <div className="max-w-full mx-auto px-2 sm:px-4 lg:px-8">
+          <div className="flex items-center justify-between h-14 sm:h-16">
             {/* Mobile menu button */}
             <button
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
@@ -128,7 +128,7 @@ const Header = () => {
             </nav>
 
             {/* Search Bar */}
-            <div ref={searchRef} className="flex-1 max-w-2xl mx-4 relative">
+            <div ref={searchRef} className="flex-1 max-w-md sm:max-w-xl lg:max-w-2xl mx-2 sm:mx-4 relative hidden sm:block">
               <form onSubmit={handleSearchSubmit} className="relative">
                 <div className="relative">
                   <input
@@ -137,25 +137,25 @@ const Header = () => {
                     onChange={(e) => setSearchQuery(e.target.value)}
                     onFocus={() => setIsSearchFocused(true)}
                     placeholder="Search for products, brands, and more..."
-                    className="w-full px-4 py-2 pl-10 pr-20 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-wowktm-primary focus:border-transparent"
+                    className="w-full px-3 py-1.5 sm:px-4 sm:py-2 pl-8 sm:pl-10 pr-16 sm:pr-20 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-wowktm-primary focus:border-transparent text-sm"
                   />
-                  <svg className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <svg className="absolute left-2 sm:left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 sm:w-5 sm:h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
                   </svg>
-                  <div className="absolute right-2 top-1/2 transform -translate-y-1/2 flex items-center space-x-1">
+                  <div className="absolute right-1 sm:right-2 top-1/2 transform -translate-y-1/2 flex items-center space-x-1">
                     <button
                       type="button"
                       onClick={() => setShowAdvancedSearch(!showAdvancedSearch)}
-                      className="p-1 text-gray-400 hover:text-wowktm-primary transition-colors"
+                      className="p-1 text-gray-400 hover:text-wowktm-primary transition-colors hidden sm:block"
                       title="Advanced Search"
                     >
-                      <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <svg className="w-3 h-3 sm:w-4 sm:h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 100 4m0-4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 100 4m0-4v2m0-6V4" />
                       </svg>
                     </button>
                     <button
                       type="submit"
-                      className="bg-wowktm-primary text-white px-3 py-1 rounded-md hover:bg-wowktm-secondary transition-colors text-sm font-medium"
+                      className="bg-wowktm-primary text-white px-2 py-1 sm:px-3 sm:py-1 rounded-md hover:bg-wowktm-secondary transition-colors text-xs sm:text-sm font-medium"
                     >
                       Search
                     </button>
