@@ -13,6 +13,8 @@ import CartPage from './pages/CartPage';
 import SellerRegistrationPage from './pages/SellerRegistrationPage';
 import OrderManagementPage from './pages/OrderManagementPage';
 import SellerProductsPage from './pages/SellerProductsPage';
+import SellerProductUploadPage from './pages/SellerProductUploadPage';
+import SellerDashboardPage from './pages/SellerDashboardPage';
 import ProfilePage from './pages/ProfilePage';
 import EmailVerificationPage from './pages/EmailVerificationPage';
 import ForgotPasswordPage from './pages/ForgotPasswordPage';
@@ -104,7 +106,7 @@ function App() {
                   {/* Seller Routes */}
                   <Route path="/seller/dashboard" element={
                     <SellerRoute>
-                      <SellerProductsPage />
+                      <SellerDashboardPage />
                     </SellerRoute>
                   } />
                   <Route path="/seller/products" element={
@@ -112,10 +114,25 @@ function App() {
                       <SellerProductsPage />
                     </SellerRoute>
                   } />
+                  <Route path="/seller/upload" element={
+                    <SellerRoute>
+                      <SellerProductUploadPage />
+                    </SellerRoute>
+                  } />
                   <Route path="/seller/orders" element={
                     <SellerRoute>
                       <OrderManagementPage />
                     </SellerRoute>
+                  } />
+                  <Route path="/upload-product" element={
+                    <ProtectedRoute>
+                      <SellerProductUploadPage />
+                    </ProtectedRoute>
+                  } />
+                  <Route path="/seller-dashboard" element={
+                    <ProtectedRoute>
+                      <SellerDashboardPage />
+                    </ProtectedRoute>
                   } />
                   
                   {/* Admin Routes */}

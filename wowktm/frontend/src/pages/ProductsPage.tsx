@@ -14,6 +14,7 @@ interface Filters {
   isHandmade: boolean;
   isVintage: boolean;
   isCustomizable: boolean;
+  categories: string[];
 }
 
 const ProductsPage: React.FC = () => {
@@ -28,7 +29,8 @@ const ProductsPage: React.FC = () => {
     shipsFrom: '',
     isHandmade: false,
     isVintage: false,
-    isCustomizable: false
+    isCustomizable: false,
+    categories: []
   });
 
   const category = searchParams.get('category');
@@ -81,6 +83,54 @@ const ProductsPage: React.FC = () => {
                     }))}
                     className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer"
                   />
+                </div>
+              </div>
+
+              {/* Categories */}
+              <div className="mb-6">
+                <label className="block text-sm font-medium text-gray-700 mb-3">Categories</label>
+                <div className="space-y-2 max-h-64 overflow-y-auto">
+                  {[
+                    'Accessories',
+                    'Art & Collectibles', 
+                    'Bags & Purses',
+                    'Bath & Beauty',
+                    'Books, Movies & Music',
+                    'Clothing',
+                    'Craft Supplies & Tools',
+                    'Electronics & Accessories',
+                    'Home & Living',
+                    'Jewelry',
+                    'Paper & Party Supplies',
+                    'Pet Supplies',
+                    'Shoes',
+                    'Toys & Games',
+                    'Weddings',
+                    'Baby & Kids',
+                    'Gifts'
+                  ].map((category) => (
+                    <label key={category} className="flex items-center">
+                      <input
+                        type="checkbox"
+                        checked={filters.categories.includes(category)}
+                        onChange={(e) => {
+                          if (e.target.checked) {
+                            setFilters(prev => ({ 
+                              ...prev, 
+                              categories: [...prev.categories, category] 
+                            }));
+                          } else {
+                            setFilters(prev => ({ 
+                              ...prev, 
+                              categories: prev.categories.filter(c => c !== category) 
+                            }));
+                          }
+                        }}
+                        className="rounded border-gray-300 text-wowktm-primary focus:ring-wowktm-primary"
+                      />
+                      <span className="ml-2 text-sm text-gray-700">{category}</span>
+                    </label>
+                  ))}
                 </div>
               </div>
 
@@ -174,7 +224,8 @@ const ProductsPage: React.FC = () => {
                   shipsFrom: '',
                   isHandmade: false,
                   isVintage: false,
-                  isCustomizable: false
+                  isCustomizable: false,
+                  categories: []
                 })}
                 className="w-full bg-gray-100 text-gray-700 py-2 px-4 rounded-lg hover:bg-gray-200 transition-colors"
               >

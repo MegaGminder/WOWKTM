@@ -24,7 +24,7 @@ const Wishlist: React.FC = () => {
   useEffect(() => {
     const mockWishlist: WishlistItem[] = [
       {
-        id: 1,
+        id: "1",
         name: 'Handmade Ceramic Vase',
         description: 'Beautiful handcrafted ceramic vase perfect for your home decor',
         price: 45.99,
@@ -42,14 +42,15 @@ const Wishlist: React.FC = () => {
           { date: '2025-01-10', price: 52.99 }
         ],
         delivery: {
-          sameDayPickup: true,
-          fastDelivery: true,
-          estimatedDelivery: '2-3 hours',
-          pickupLocation: 'Downtown Studio'
-        }
+          freeShipping: true,
+          expeditedShipping: true,
+          shippingTime: '2-3 hours',
+          processingTime: 'Same day pickup available'
+        },
+        seller: 'Ceramic Arts Studio'
       },
       {
-        id: 2,
+        id: "2",
         name: 'Vintage Leather Journal',
         description: 'Authentic vintage leather-bound journal with aged pages',
         price: 32.50,
@@ -66,17 +67,18 @@ const Wishlist: React.FC = () => {
           { date: '2025-01-12', price: 35.00 }
         ],
         delivery: {
-          sameDayPickup: false,
-          fastDelivery: true,
-          estimatedDelivery: '1-2 days',
-          pickupLocation: undefined
-        }
+          freeShipping: false,
+          expeditedShipping: true,
+          shippingTime: '1-2 days',
+          processingTime: '1 business day'
+        },
+        seller: 'Vintage Books & More'
       }
     ];
     setWishlistItems(mockWishlist);
   }, []);
 
-  const removeFromWishlist = (productId: number) => {
+  const removeFromWishlist = (productId: string) => {
     setWishlistItems(prev => prev.filter(item => item.id !== productId));
     showToast('Item removed from wishlist', 'success');
   };

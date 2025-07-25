@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import ProductService from '../services/ProductService';
 
 interface FlashProduct {
-  id: number;
+  id: string;
   name: string;
   price: number;
   originalPrice: number;
@@ -22,6 +23,32 @@ const FlashSales: React.FC = () => {
     minutes: 45,
     seconds: 32
   });
+  const [flashProducts, setFlashProducts] = useState<FlashProduct[]>([]);
+
+  useEffect(() => {
+    // Get actual products from ProductService and convert them to flash sale format
+    const allProducts = ProductService.getAllProducts();
+    const selectedProducts = allProducts.slice(0, 8); // Take first 8 products
+    
+    const flashSaleProducts: FlashProduct[] = selectedProducts.map((product, index) => ({
+      id: product.id,
+      name: product.name,
+      price: product.originalPrice ? product.price : product.price * 0.7, // Create discounted price
+      originalPrice: product.originalPrice || product.price,
+      image: product.imageUrl,
+      seller: product.seller.name,
+      rating: product.rating,
+      reviews: product.reviewCount,
+      discount: product.originalPrice 
+        ? Math.round(((product.originalPrice - product.price) / product.originalPrice) * 100)
+        : 30, // Default 30% discount
+      timeLeft: "23:45:32",
+      sold: Math.floor(Math.random() * 200) + 50, // Random sold count
+      available: Math.floor(Math.random() * 100) + 50 // Random available count
+    }));
+    
+    setFlashProducts(flashSaleProducts);
+  }, []);
 
   useEffect(() => {
     const timer = setInterval(() => {
@@ -39,121 +66,6 @@ const FlashSales: React.FC = () => {
 
     return () => clearInterval(timer);
   }, []);
-
-  const flashProducts: FlashProduct[] = [
-    {
-      id: 1,
-      name: "Hand-Painted Ceramic Vase",
-      price: 29.99,
-      originalPrice: 49.99,
-      image: "https://images.unsplash.com/photo-1578662996442-48f60103fc96?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&h=300&q=80",
-      seller: "CeramicArt Studio",
-      rating: 4.8,
-      reviews: 124,
-      discount: 40,
-      timeLeft: "23:45:32",
-      sold: 87,
-      available: 150
-    },
-    {
-      id: 2,
-      name: "Vintage Leather Messenger Bag",
-      price: 59.99,
-      originalPrice: 89.99,
-      image: "https://images.unsplash.com/photo-1553062407-98eeb64c6a62?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&h=300&q=80",
-      seller: "Heritage Crafts",
-      rating: 4.9,
-      reviews: 203,
-      discount: 33,
-      timeLeft: "23:45:32",
-      sold: 156,
-      available: 200
-    },
-    {
-      id: 3,
-      name: "Sterling Silver Moon Phase Necklace",
-      price: 49.99,
-      originalPrice: 79.99,
-      image: "https://images.unsplash.com/photo-1515562141207-7a88fb7ce338?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&h=300&q=80",
-      seller: "Lunar Jewelry Co",
-      rating: 4.7,
-      reviews: 89,
-      discount: 38,
-      timeLeft: "23:45:32",
-      sold: 63,
-      available: 100
-    },
-    {
-      id: 4,
-      name: "Handwoven Macrame Wall Hanging",
-      price: 22.99,
-      originalPrice: 34.99,
-      image: "https://images.unsplash.com/photo-1586023492125-27b2c045efd7?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&h=300&q=80",
-      seller: "Boho Home Decor",
-      rating: 4.6,
-      reviews: 156,
-      discount: 34,
-      timeLeft: "23:45:32",
-      sold: 234,
-      available: 300
-    },
-    {
-      id: 5,
-      name: "Artisan Soap Gift Set (6 Bars)",
-      price: 19.99,
-      originalPrice: 32.99,
-      image: "https://images.unsplash.com/photo-1556909088-18e8e9cd65e2?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&h=300&q=80",
-      seller: "Natural Bath Co",
-      rating: 4.8,
-      reviews: 312,
-      discount: 39,
-      timeLeft: "23:45:32",
-      sold: 445,
-      available: 500
-    },
-    {
-      id: 6,
-      name: "Custom Pet Portrait Canvas",
-      price: 39.99,
-      originalPrice: 59.99,
-      image: "https://images.unsplash.com/photo-1541961017774-22349e4a1262?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&h=300&q=80",
-      seller: "Pet Art Studio",
-      rating: 4.9,
-      reviews: 78,
-      discount: 33,
-      timeLeft: "23:45:32",
-      sold: 34,
-      available: 75
-    },
-    {
-      id: 7,
-      name: "Handcrafted Wooden Cutting Board",
-      price: 27.99,
-      originalPrice: 42.99,
-      image: "https://images.unsplash.com/photo-1616486029423-aaa4789e8c9a?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&h=300&q=80",
-      seller: "Wood & Grain Co",
-      rating: 4.7,
-      reviews: 167,
-      discount: 35,
-      timeLeft: "23:45:32",
-      sold: 123,
-      available: 180
-    },
-    {
-      id: 8,
-      name: "Bohemian Dreamcatcher Set",
-      price: 21.99,
-      originalPrice: 35.99,
-      image: "https://images.unsplash.com/photo-1578662996442-48f60103fc96?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&h=300&q=80",
-      seller: "Mystic Dreams",
-      rating: 4.5,
-      reviews: 94,
-      discount: 39,
-      timeLeft: "23:45:32",
-      sold: 78,
-      available: 120
-    }
-  ];
 
   return (
     <div className="bg-gradient-to-r from-red-50 to-pink-50 py-12">
@@ -188,7 +100,7 @@ const FlashSales: React.FC = () => {
             return (
               <Link
                 key={product.id}
-                to="/products"
+                to={`/product/${product.id}`}
                 className="bg-white rounded-lg shadow-lg overflow-hidden hover:shadow-xl transition-all duration-300 transform hover:scale-105 border-2 border-red-100 hover:border-red-300"
               >
                 {/* Image */}

@@ -4,7 +4,8 @@ import { Link } from 'react-router-dom';
 import OptimizedImage from './OptimizedImage';
 import { useCart } from '../context/CartContext';
 import { useToast } from './ToastProvider';
-import { getDummyProducts, Product as DummyProduct } from '../data/dummyData';
+import ProductService from '../services/ProductService';
+import { Product as DummyProduct } from '../data/dummyData';
 
 interface Product {
   id: string;
@@ -48,6 +49,7 @@ interface ProductListingProps {
     isHandmade: boolean;
     isVintage: boolean;
     isCustomizable: boolean;
+    categories: string[];
   };
 }
 
@@ -73,13 +75,21 @@ const ProductListing: React.FC<ProductListingProps> = ({ category, searchQuery, 
       setLoading(true);
       
       try {
-        const result = await getDummyProducts({
-          category,
-          search: searchQuery
-        });
+        // Get products from our service
+        let allProducts = ProductService.getAllProducts();
+        
+        // Filter by category if specified
+        if (category) {
+          allProducts = ProductService.getProductsByCategory(category);
+        }
+        
+        // Filter by search if specified
+        if (searchQuery) {
+          allProducts = ProductService.searchProducts(searchQuery);
+        }
         
         // Convert dummy data to component format
-        let convertedProducts: Product[] = result.data.map(p => ({
+        let convertedProducts: Product[] = allProducts.map((p: DummyProduct) => ({
           id: p.id,
           name: p.name,
           price: p.price,
@@ -135,6 +145,12 @@ const ProductListing: React.FC<ProductListingProps> = ({ category, searchQuery, 
 
           if (filters.isCustomizable) {
             convertedProducts = convertedProducts.filter(product => product.isCustomizable);
+          }
+
+          if (filters.categories && filters.categories.length > 0) {
+            convertedProducts = convertedProducts.filter(product => 
+              filters.categories.includes(product.category)
+            );
           }
 
           // Sort products

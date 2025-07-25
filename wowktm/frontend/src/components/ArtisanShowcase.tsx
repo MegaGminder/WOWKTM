@@ -2,7 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 
 interface ArtisanProduct {
-  id: number;
+  id: string;
   name: string;
   description: string;
   price: number;
@@ -23,7 +23,7 @@ interface ArtisanProduct {
 const ArtisanShowcase: React.FC = () => {
   const featuredArtisans: ArtisanProduct[] = [
     {
-      id: 1,
+      id: "1",
       name: "Hand-Forged Sterling Silver Moon Phase Ring",
       description: "Unique handcrafted ring featuring all phases of the moon, perfect for celestial lovers",
       price: 78.00,
@@ -41,7 +41,7 @@ const ArtisanShowcase: React.FC = () => {
       tags: ["celestial", "moon", "minimalist", "boho"]
     },
     {
-      id: 2,
+      id: "2",
       name: "Vintage-Inspired Leather Bound Journal",
       description: "Hand-stitched leather journal with aged parchment paper, perfect for writers and dreamers",
       price: 42.00,
@@ -58,7 +58,7 @@ const ArtisanShowcase: React.FC = () => {
       tags: ["vintage", "writing", "journal", "leather"]
     },
     {
-      id: 3,
+      id: "3",
       name: "Custom Pet Portrait - Watercolor Style",
       description: "Beautiful custom watercolor portrait of your beloved pet, painted by hand from your photo",
       price: 65.00,
@@ -76,7 +76,7 @@ const ArtisanShowcase: React.FC = () => {
       tags: ["custom", "pet portrait", "watercolor", "gift"]
     },
     {
-      id: 4,
+      id: "4",
       name: "Macrame Wall Hanging - Desert Sunset",
       description: "Handwoven macrame art piece in warm sunset colors, perfect for bohemian home decor",
       price: 89.00,
@@ -93,7 +93,7 @@ const ArtisanShowcase: React.FC = () => {
       tags: ["macrame", "wall art", "boho", "desert"]
     },
     {
-      id: 5,
+      id: "5",
       name: "Artisan Ceramic Coffee Mug - Speckled Blue",
       description: "Hand-thrown ceramic mug with unique speckled glaze, microwave and dishwasher safe",
       price: 28.00,
@@ -110,7 +110,7 @@ const ArtisanShowcase: React.FC = () => {
       tags: ["ceramic", "coffee", "handmade", "kitchen"]
     },
     {
-      id: 6,
+      id: "6",
       name: "Hand-Embroidered Linen Tea Towels",
       description: "Set of 3 linen tea towels with delicate hand-embroidered botanical designs",
       price: 36.00,
