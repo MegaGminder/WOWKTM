@@ -3,49 +3,35 @@ import { motion, useViewportScroll, useTransform } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import {
   ScrollAnimation,
-  ParallaxSection,
   MorphingShape,
   ScrollProgress,
-  FloatingElement,
   TextReveal,
   NumberCounter
 } from './ScrollAnimations';
 import OptimizedImage from './OptimizedImage';
 
 const ImmersiveLandingPage: React.FC = () => {
-  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
   const [scrollDirection, setScrollDirection] = useState<'up' | 'down'>('down');
   const [lastScrollY, setLastScrollY] = useState(0);
   const containerRef = useRef<HTMLDivElement>(null);
   
   const { scrollY, scrollYProgress } = useViewportScroll();
   
-  // Hero parallax effects
-  const heroY = useTransform(scrollY, [0, 500], [0, -250]);
-  const heroOpacity = useTransform(scrollY, [0, 300], [1, 0]);
-  const heroScale = useTransform(scrollY, [0, 300], [1, 1.2]);
-  
-  // Background parallax layers
+  // Background parallax layers (keep these for other sections)
   const bgLayer1 = useTransform(scrollY, [0, 1000], [0, -300]);
   const bgLayer2 = useTransform(scrollY, [0, 1000], [0, -150]);
   const bgLayer3 = useTransform(scrollY, [0, 1000], [0, -75]);
 
   useEffect(() => {
-    const handleMouseMove = (e: MouseEvent) => {
-      setMousePosition({ x: e.clientX, y: e.clientY });
-    };
-
     const handleScroll = () => {
       const currentScrollY = window.scrollY;
       setScrollDirection(currentScrollY > lastScrollY ? 'down' : 'up');
       setLastScrollY(currentScrollY);
     };
 
-    window.addEventListener('mousemove', handleMouseMove);
     window.addEventListener('scroll', handleScroll);
     
     return () => {
-      window.removeEventListener('mousemove', handleMouseMove);
       window.removeEventListener('scroll', handleScroll);
     };
   }, [lastScrollY]);
@@ -110,30 +96,27 @@ const ImmersiveLandingPage: React.FC = () => {
       <MorphingShape className="bottom-40 left-1/4" color="#F59E0B" />
       <MorphingShape className="bottom-20 right-1/3" color="#10B981" />
 
-      {/* Hero Section with Extreme Parallax */}
-      <ParallaxSection
+      {/* Hero Section with Static Background */}
+      <section
         className="relative h-screen flex items-center justify-center overflow-hidden"
-        bgImage="https://images.unsplash.com/photo-1441986300917-64674bd600d8?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80"
-        overlay={true}
-        speed={0.8}
+        style={{
+          backgroundImage: "url('https://images.unsplash.com/photo-1441986300917-64674bd600d8?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80')",
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+          backgroundAttachment: 'fixed'
+        }}
       >
-        <motion.div
-          className="relative z-10 text-center text-white px-4"
-          style={{ y: heroY, opacity: heroOpacity, scale: heroScale }}
+        {/* Static overlay */}
+        <div className="absolute inset-0 bg-black bg-opacity-40 z-5"></div>
+        
+        <div
+          className="relative z-10 text-center text-white px-4 -mt-20"
         >
-          <FloatingElement amplitude={15} frequency={3}>
-            <motion.div
-              className="w-24 h-24 mx-auto mb-8 rounded-full bg-gradient-to-r from-purple-500 to-pink-500 flex items-center justify-center text-4xl font-bold shadow-2xl"
-              whileHover={{ 
-                scale: 1.2, 
-                rotate: 360,
-                boxShadow: '0 0 50px rgba(168, 85, 247, 0.8)'
-              }}
-              transition={{ duration: 0.8 }}
-            >
-              W
-            </motion.div>
-          </FloatingElement>
+          <div
+            className="w-24 h-24 mx-auto mb-8 rounded-full bg-gradient-to-r from-purple-500 to-pink-500 flex items-center justify-center text-4xl font-bold shadow-2xl"
+          >
+            W
+          </div>
 
           <TextReveal
             text="Welcome to WoWKTM"
@@ -148,46 +131,21 @@ const ImmersiveLandingPage: React.FC = () => {
             stagger={0.03}
           />
 
-          <motion.div
-            className="flex flex-col sm:flex-row gap-6 justify-center items-center"
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 1, duration: 0.8 }}
-          >
+          <div className="flex flex-col sm:flex-row gap-6 justify-center items-center">
             <Link to="/products">
-              <motion.button
-                className="px-12 py-4 bg-gradient-to-r from-purple-600 to-pink-600 rounded-full text-white font-semibold text-lg shadow-2xl"
-                whileHover={{ 
-                  scale: 1.05, 
-                  boxShadow: '0 0 30px rgba(168, 85, 247, 0.6)',
-                  background: 'linear-gradient(45deg, #8B5CF6, #EC4899, #F59E0B)'
-                }}
-                whileTap={{ scale: 0.95 }}
-              >
+              <button className="px-12 py-4 bg-gradient-to-r from-purple-600 to-pink-600 rounded-full text-white font-semibold text-lg shadow-2xl hover:scale-105 transition-transform">
                 Explore Marketplace
-              </motion.button>
+              </button>
             </Link>
             
-            <motion.button
-              className="px-12 py-4 border-2 border-white/30 rounded-full text-white font-semibold text-lg backdrop-blur-sm hover:bg-white/10 transition-all"
-              whileHover={{ scale: 1.05, borderColor: 'rgba(255,255,255,0.8)' }}
-              whileTap={{ scale: 0.95 }}
-            >
+            <button className="px-12 py-4 border-2 border-white/30 rounded-full text-white font-semibold text-lg backdrop-blur-sm hover:bg-white/10 transition-all hover:scale-105">
               Watch Demo
-            </motion.button>
-          </motion.div>
-        </motion.div>
+            </button>
+          </div>
+        </div>
 
-        {/* Interactive Cursor Trail */}
-        <motion.div
-          className="fixed pointer-events-none z-50 w-6 h-6 border-2 border-white rounded-full mix-blend-difference"
-          animate={{
-            x: mousePosition.x - 12,
-            y: mousePosition.y - 12,
-          }}
-          transition={{ type: 'spring', stiffness: 500, damping: 30 }}
-        />
-      </ParallaxSection>
+        {/* Remove Interactive Cursor Trail */}
+      </section>
 
       {/* Stats Section with Counter Animation */}
       <ScrollAnimation animation="slide-up" className="py-24 bg-gradient-to-r from-purple-50 to-pink-50">

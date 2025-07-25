@@ -1,5 +1,8 @@
+import React, { useEffect, useState } from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import Header from './components/Header_new';
+import ResponsiveHeader from './components/ResponsiveHeader';
+import MobileBottomNav from './components/MobileBottomNav';
 import Footer from './components/Footer';
 import LandingPage from './pages/LandingPage';
 import ProductsPage from './pages/ProductsPage';
@@ -15,6 +18,7 @@ import EmailVerificationPage from './pages/EmailVerificationPage';
 import ForgotPasswordPage from './pages/ForgotPasswordPage';
 import ResetPasswordPage from './pages/ResetPasswordPage';
 import FlashDealsPage from './pages/FlashDealsPage';
+import MobileShowcasePage from './pages/MobileShowcasePage';
 import Wishlist from './components/Wishlist';
 import EmailPreview from './components/EmailPreview';
 import ProtectedRoute, { AdminRoute, SellerRoute, BuyerRoute } from './components/ProtectedRoute';
@@ -23,11 +27,20 @@ import { ToastProvider } from './components/ToastProvider';
 import { CartProvider } from './context/CartContext';
 import { AuthProvider } from './contexts/AuthContext';
 import { initPerformanceMonitoring } from './utils/performance';
-import { useEffect } from 'react';
 
 function App() {
+  const [isMobile, setIsMobile] = useState(false);
+
   useEffect(() => {
     initPerformanceMonitoring();
+    
+    const checkIsMobile = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
+    
+    checkIsMobile();
+    window.addEventListener('resize', checkIsMobile);
+    return () => window.removeEventListener('resize', checkIsMobile);
   }, []);
 
   return (
@@ -36,13 +49,14 @@ function App() {
         <ToastProvider>
           <BrowserRouter>
             <div className="min-h-screen bg-gray-50 flex flex-col">
-              <Header />
-              <main className="flex-1">
+              {isMobile ? <ResponsiveHeader /> : <Header />}
+              <main className={`flex-1 ${isMobile ? 'pb-16' : ''}`}>
                 <Routes>
                   {/* Public Routes */}
                   <Route path="/" element={<LandingPage />} />
                   <Route path="/products" element={<ProductsPage />} />
                   <Route path="/flash-deals" element={<FlashDealsPage />} />
+                  <Route path="/mobile-showcase" element={<MobileShowcasePage />} />
                   <Route path="/product/:id" element={<ProductDetailsPage />} />
                   <Route path="/login" element={<LoginPage />} />
                   <Route path="/signup" element={<SignupPage />} />
@@ -134,7 +148,7 @@ function App() {
                   } />
                 </Routes>
               </main>
-              <Footer />
+              {isMobile && <MobileBottomNav />}
             </div>
           </BrowserRouter>
         </ToastProvider>
