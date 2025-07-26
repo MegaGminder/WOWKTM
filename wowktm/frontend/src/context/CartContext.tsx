@@ -39,61 +39,22 @@ interface CartProviderProps {
 }
 
 export const CartProvider: React.FC<CartProviderProps> = ({ children }) => {
-  const [items, setItems] = useState<CartItem[]>([
-    // Mock initial data - remove this in production
-    {
-      id: 1,
-      name: 'Handmade Sterling Silver Necklace with Turquoise Stone',
-      price: 89.99,
-      originalPrice: 119.99,
-      image: 'https://images.unsplash.com/photo-1515562141207-7a88fb7ce338?ixlib=rb-4.0.3&auto=format&fit=crop&w=120&h=120&q=80',
-      quantity: 1,
-      seller: 'ArtisanJewelry Co.',
-      shipping: 'FREE shipping',
-      inStock: true,
-      category: 'Jewelry',
-      description: 'Beautiful handcrafted necklace perfect for any occasion'
-    },
-    {
-      id: 2,
-      name: 'Vintage Leather Crossbody Bag - Brown',
-      price: 145.00,
-      image: 'https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?ixlib=rb-4.0.3&auto=format&fit=crop&w=120&h=120&q=80',
-      quantity: 2,
-      seller: 'Vintage Treasures',
-      shipping: 'Ships in 2-3 days',
-      inStock: true,
-      category: 'Bags & Purses',
-      description: 'Authentic vintage leather bag in excellent condition'
-    },
-    {
-      id: 3,
-      name: 'Custom Portrait Digital Art Commission',
-      price: 75.00,
-      image: 'https://images.unsplash.com/photo-1541961017774-22349e4a1262?ixlib=rb-4.0.3&auto=format&fit=crop&w=120&h=120&q=80',
-      quantity: 1,
-      seller: 'Digital Art Studio',
-      shipping: 'Digital delivery',
-      inStock: false,
-      category: 'Art',
-      description: 'Personalized digital portrait from your photo'
-    }
-  ]);
-
-  // Load cart from localStorage on mount
-  useEffect(() => {
-    const savedCart = localStorage.getItem('wowktm-cart');
-    if (savedCart) {
+  // Initialize cart from localStorage for offline persistence
+  const [items, setItems] = useState<CartItem[]>(() => {
+    const saved = localStorage.getItem('wowktm-cart');
+    if (saved) {
       try {
-        const parsedCart = JSON.parse(savedCart);
-        if (Array.isArray(parsedCart)) {
-          setItems(parsedCart);
+        const parsed = JSON.parse(saved);
+        if (Array.isArray(parsed)) {
+          return parsed;
         }
-      } catch (error) {
-        console.error('Error loading cart from localStorage:', error);
+      } catch (e) {
+        console.error('Failed to parse saved cart:', e);
       }
     }
-  }, []);
+    return [];
+  });
+
 
   // Save cart to localStorage whenever items change
   useEffect(() => {

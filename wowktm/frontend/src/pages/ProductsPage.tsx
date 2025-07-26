@@ -19,7 +19,7 @@ interface Filters {
 
 const ProductsPage: React.FC = () => {
   useScrollToTop();
-  const [searchParams] = useSearchParams();
+  const [searchParams, setSearchParams] = useSearchParams();
   const [filters, setFilters] = useState<Filters>({
     priceRange: [0, 1000],
     rating: 0,
@@ -42,7 +42,11 @@ const ProductsPage: React.FC = () => {
       {/* Search Bar */}
       <div className="bg-white shadow-sm border-b">
         <div className="max-w-full mx-auto px-4 sm:px-6 lg:px-8 py-4 sm:py-6">
-          <AdvancedSearch />
+          <AdvancedSearch onSearch={(query: string) => {
+            const newParams = new URLSearchParams(searchParams);
+            newParams.set('search', query);
+            setSearchParams(newParams);
+          }} />
         </div>
       </div>
 

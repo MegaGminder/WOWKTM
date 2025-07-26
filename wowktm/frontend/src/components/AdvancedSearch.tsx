@@ -23,9 +23,10 @@ interface SearchFilter {
 
 interface AdvancedSearchProps {
   onClose?: () => void;
+  onSearch?: (query: string) => void;
 }
 
-const AdvancedSearch: React.FC<AdvancedSearchProps> = ({ onClose }) => {
+const AdvancedSearch: React.FC<AdvancedSearchProps> = ({ onClose, onSearch }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
   const [suggestions, setSuggestions] = useState<SearchSuggestion[]>([]);
@@ -349,18 +350,30 @@ const AdvancedSearch: React.FC<AdvancedSearchProps> = ({ onClose }) => {
     }
   }, [searchQuery]);
 
-  const handleSearch = (query: string) => {
-    if (!query.trim()) return;
+  const handleSearch = () => {
+    if (searchQuery.trim() !== '') {
+      if (onSearch) {
+        onSearch(searchQuery);
+        setIsOpen(false);
+        if (onClose) onClose();
+        return; 
+      }
 
-    // Add to recent searches
-    setRecentSearches(prev => {
-      const filtered = prev.filter(search => search !== query);
-      return [query, ...filtered].slice(0, 5);
-    });
+      setIsSearching(true);
+      // Simulate API call
+      setTimeout(() => {
+        setIsSearching(false);
+        // Navigate to results page or update the main content view.
+        console.log('Searching for:', searchQuery, 'with filters:', filters);
+        
+        // For standalone search, we might navigate.
+        // This part is less relevant when onSearch is provided.
 
-    // Perform search (navigate to results page)
-    console.log('Searching for:', query, 'with filters:', filters);
-    setIsOpen(false);
+        setIsOpen(false);
+        if (onClose) onClose();
+        setIsSearching(false);
+      }, 1000);
+    }
   };
 
   const handleSuggestionClick = (suggestion: SearchSuggestion) => {
@@ -369,7 +382,7 @@ const AdvancedSearch: React.FC<AdvancedSearchProps> = ({ onClose }) => {
       console.log('Navigate to product:', suggestion.id);
     } else {
       setSearchQuery(suggestion.text);
-      handleSearch(suggestion.text);
+      handleSearch();
     }
   };
 
@@ -435,7 +448,7 @@ const AdvancedSearch: React.FC<AdvancedSearchProps> = ({ onClose }) => {
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
           onFocus={() => setIsOpen(true)}
-          onKeyPress={(e) => e.key === 'Enter' && handleSearch(searchQuery)}
+          onKeyPress={(e) => e.key === 'Enter' && handleSearch()}
           placeholder="Search for handmade items, vintage finds, or anything unique..."
           className="block w-full pl-10 pr-24 py-3 border border-gray-300 rounded-full focus:ring-2 focus:ring-wowktm-primary focus:border-transparent bg-white shadow-sm"
         />
@@ -453,7 +466,7 @@ const AdvancedSearch: React.FC<AdvancedSearchProps> = ({ onClose }) => {
           </button>
           
           <button
-            onClick={() => handleSearch(searchQuery)}
+            onClick={() => handleSearch()}
             className="bg-wowktm-primary text-white px-4 py-2 rounded-full hover:bg-wowktm-secondary transition-colors"
           >
             Search
@@ -676,7 +689,14 @@ const AdvancedSearch: React.FC<AdvancedSearchProps> = ({ onClose }) => {
                       {recentSearches.map((search, index) => (
                         <button
                           key={index}
-                          onClick={() => handleSearch(search)}
+                          onClick={() => {
+                            setSearchQuery(search);
+                            if (onSearch) {
+                              onSearch(search);
+                              setIsOpen(false);
+                              if (onClose) onClose();
+                            }
+                          }}
                           className="w-full text-left px-2 py-1 hover:bg-gray-50 rounded text-sm text-gray-600 flex items-center space-x-2"
                         >
                           <svg className="w-3 h-3 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -694,7 +714,14 @@ const AdvancedSearch: React.FC<AdvancedSearchProps> = ({ onClose }) => {
                     {trendingSearches.map((search, index) => (
                       <button
                         key={index}
-                        onClick={() => handleSearch(search)}
+                        onClick={() => {
+                          setSearchQuery(search);
+                          if (onSearch) {
+                            onSearch(search);
+                            setIsOpen(false);
+                            if (onClose) onClose();
+                          }
+                        }}
                         className="w-full text-left px-2 py-1 hover:bg-gray-50 rounded text-sm text-gray-600 flex items-center space-x-2"
                       >
                         <svg className="w-3 h-3 text-wowktm-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">

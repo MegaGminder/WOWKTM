@@ -27,10 +27,19 @@ const Header = () => {
   const [showAdvancedSearch, setShowAdvancedSearch] = useState(false);
   const [isCategoriesDropdownOpen, setIsCategoriesDropdownOpen] = useState(false);
   const [isMobileCategoriesOpen, setIsMobileCategoriesOpen] = useState(false);
+  const [recentSearches, setRecentSearches] = useState<string[]>([]);
   // Reset mobile categories submenu when mobile menu opens or closes
   useEffect(() => {
     setIsMobileCategoriesOpen(false);
   }, [isMobileMenuOpen]);
+
+  // Load recent searches from localStorage
+  useEffect(() => {
+    const savedSearches = localStorage.getItem('wowktm-recent-searches');
+    if (savedSearches) {
+      setRecentSearches(JSON.parse(savedSearches));
+    }
+  }, []);
 
   const { items: cartItems, removeItem, updateQuantity } = useCart();
   const cartItemsCount = cartItems.reduce((total: number, item: CartItem) => total + item.quantity, 0);
@@ -69,9 +78,35 @@ const Header = () => {
     setIsMobileCategoriesOpen(false);
   }, [isMobileMenuOpen]);
 
+  const addToRecentSearches = (query: string) => {
+    const trimmedQuery = query.trim();
+    if (!trimmedQuery) return;
+
+    setRecentSearches(prev => {
+      const filtered = prev.filter(search => search.toLowerCase() !== trimmedQuery.toLowerCase());
+      const updated = [trimmedQuery, ...filtered].slice(0, 5); // Keep only 5 recent searches
+      localStorage.setItem('wowktm-recent-searches', JSON.stringify(updated));
+      return updated;
+    });
+  };
+
+  const removeFromRecentSearches = (query: string) => {
+    setRecentSearches(prev => {
+      const updated = prev.filter(search => search !== query);
+      localStorage.setItem('wowktm-recent-searches', JSON.stringify(updated));
+      return updated;
+    });
+  };
+
+  const clearAllRecentSearches = () => {
+    setRecentSearches([]);
+    localStorage.removeItem('wowktm-recent-searches');
+  };
+
   const handleSearchSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (searchQuery.trim()) {
+      addToRecentSearches(searchQuery.trim());
       // Navigate to products page with search query
       window.location.href = `/products?search=${encodeURIComponent(searchQuery.trim())}`;
     }
@@ -257,21 +292,92 @@ const Header = () => {
               )}
 
               {/* Search Suggestions */}
-              {isSearchFocused && searchQuery.length > 0 && (
+              {isSearchFocused && (
                 <div className="absolute top-full left-0 right-0 mt-2 bg-white rounded-lg shadow-xl border z-50 animate-fadeIn">
                   <div className="p-3">
-                    <h4 className="text-sm font-semibold text-gray-700 mb-2">Popular Searches</h4>
-                    <div className="space-y-1">
-                      <div className="px-3 py-2 hover:bg-gray-50 rounded cursor-pointer text-sm text-gray-600">
-                        🔍 {searchQuery} in Electronics
-                      </div>
-                      <div className="px-3 py-2 hover:bg-gray-50 rounded cursor-pointer text-sm text-gray-600">
-                        🔍 {searchQuery} in Fashion
-                      </div>
-                      <div className="px-3 py-2 hover:bg-gray-50 rounded cursor-pointer text-sm text-gray-600">
-                        🔍 {searchQuery} in Home & Garden
-                      </div>
-                    </div>
+                    {/* Recent Searches */}
+                    {recentSearches.length > 0 && (
+                      <>
+                        <div className="flex items-center justify-between mb-2">
+                          <h4 className="text-sm font-semibold text-gray-700">Recent Searches</h4>
+                          <button
+                            onClick={clearAllRecentSearches}
+                            className="text-xs text-gray-500 hover:text-red-500 transition-colors"
+                          >
+                            Clear All
+                          </button>
+                        </div>
+                        <div className="space-y-1 mb-4">
+                          {recentSearches.map((search, index) => (
+                            <div key={index} className="flex items-center justify-between group">
+                              <button
+                                onClick={() => {
+                                  setSearchQuery(search);
+                                  addToRecentSearches(search);
+                                  window.location.href = `/products?search=${encodeURIComponent(search)}`;
+                                }}
+                                className="flex-1 text-left px-3 py-2 hover:bg-gray-50 rounded cursor-pointer text-sm text-gray-600 flex items-center"
+                              >
+                                <svg className="w-4 h-4 text-gray-400 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                </svg>
+                                {search}
+                              </button>
+                              <button
+                                onClick={(e) => {
+                                  e.stopPropagation();
+                                  removeFromRecentSearches(search);
+                                }}
+                                className="opacity-0 group-hover:opacity-100 p-1 text-gray-400 hover:text-red-500 transition-all mr-2"
+                              >
+                                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" />
+                                </svg>
+                              </button>
+                            </div>
+                          ))}
+                        </div>
+                      </>
+                    )}
+
+                    {/* Search Suggestions */}
+                    {searchQuery.length > 0 && (
+                      <>
+                        <h4 className="text-sm font-semibold text-gray-700 mb-2">Search Suggestions</h4>
+                        <div className="space-y-1">
+                          <button
+                            onClick={() => {
+                              const fullQuery = `${searchQuery} in Electronics`;
+                              addToRecentSearches(fullQuery);
+                              window.location.href = `/products?search=${encodeURIComponent(fullQuery)}`;
+                            }}
+                            className="w-full text-left px-3 py-2 hover:bg-gray-50 rounded cursor-pointer text-sm text-gray-600"
+                          >
+                            🔍 {searchQuery} in Electronics
+                          </button>
+                          <button
+                            onClick={() => {
+                              const fullQuery = `${searchQuery} in Fashion`;
+                              addToRecentSearches(fullQuery);
+                              window.location.href = `/products?search=${encodeURIComponent(fullQuery)}`;
+                            }}
+                            className="w-full text-left px-3 py-2 hover:bg-gray-50 rounded cursor-pointer text-sm text-gray-600"
+                          >
+                            🔍 {searchQuery} in Fashion
+                          </button>
+                          <button
+                            onClick={() => {
+                              const fullQuery = `${searchQuery} in Home & Garden`;
+                              addToRecentSearches(fullQuery);
+                              window.location.href = `/products?search=${encodeURIComponent(fullQuery)}`;
+                            }}
+                            className="w-full text-left px-3 py-2 hover:bg-gray-50 rounded cursor-pointer text-sm text-gray-600"
+                          >
+                            🔍 {searchQuery} in Home & Garden
+                          </button>
+                        </div>
+                      </>
+                    )}
                   </div>
                 </div>
               )}
@@ -509,22 +615,91 @@ const Header = () => {
             </form>
           </div>
           {/* Search suggestions for mobile */}
-          {searchQuery.length > 0 && (
-            <div className="p-4">
-              <h4 className="text-sm font-semibold text-gray-700 mb-3">Popular Searches</h4>
-              <div className="space-y-2">
-                <div className="px-3 py-3 bg-gray-50 rounded-lg text-sm text-gray-600">
-                  🔍 {searchQuery} in Electronics
+          <div className="p-4">
+            {/* Recent Searches */}
+            {recentSearches.length > 0 && (
+              <>
+                <div className="flex items-center justify-between mb-3">
+                  <h4 className="text-sm font-semibold text-gray-700">Recent Searches</h4>
+                  <button
+                    onClick={clearAllRecentSearches}
+                    className="text-xs text-gray-500 hover:text-red-500 transition-colors"
+                  >
+                    Clear All
+                  </button>
                 </div>
-                <div className="px-3 py-3 bg-gray-50 rounded-lg text-sm text-gray-600">
-                  🔍 {searchQuery} in Fashion
+                <div className="space-y-2 mb-4">
+                  {recentSearches.map((search, index) => (
+                    <div key={index} className="flex items-center justify-between group">
+                      <button
+                        onClick={() => {
+                          setSearchQuery(search);
+                          addToRecentSearches(search);
+                          window.location.href = `/products?search=${encodeURIComponent(search)}`;
+                        }}
+                        className="flex-1 text-left px-3 py-3 bg-gray-50 rounded-lg text-sm text-gray-600 flex items-center"
+                      >
+                        <svg className="w-4 h-4 text-gray-400 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                        </svg>
+                        {search}
+                      </button>
+                      <button
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          removeFromRecentSearches(search);
+                        }}
+                        className="ml-2 p-2 text-gray-400 hover:text-red-500 transition-all"
+                      >
+                        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" />
+                        </svg>
+                      </button>
+                    </div>
+                  ))}
                 </div>
-                <div className="px-3 py-3 bg-gray-50 rounded-lg text-sm text-gray-600">
-                  🔍 {searchQuery} in Home & Garden
+              </>
+            )}
+
+            {/* Search Suggestions */}
+            {searchQuery.length > 0 && (
+              <>
+                <h4 className="text-sm font-semibold text-gray-700 mb-3">Search Suggestions</h4>
+                <div className="space-y-2">
+                  <button
+                    onClick={() => {
+                      const fullQuery = `${searchQuery} in Electronics`;
+                      addToRecentSearches(fullQuery);
+                      window.location.href = `/products?search=${encodeURIComponent(fullQuery)}`;
+                    }}
+                    className="w-full text-left px-3 py-3 bg-gray-50 rounded-lg text-sm text-gray-600"
+                  >
+                    🔍 {searchQuery} in Electronics
+                  </button>
+                  <button
+                    onClick={() => {
+                      const fullQuery = `${searchQuery} in Fashion`;
+                      addToRecentSearches(fullQuery);
+                      window.location.href = `/products?search=${encodeURIComponent(fullQuery)}`;
+                    }}
+                    className="w-full text-left px-3 py-3 bg-gray-50 rounded-lg text-sm text-gray-600"
+                  >
+                    🔍 {searchQuery} in Fashion
+                  </button>
+                  <button
+                    onClick={() => {
+                      const fullQuery = `${searchQuery} in Home & Garden`;
+                      addToRecentSearches(fullQuery);
+                      window.location.href = `/products?search=${encodeURIComponent(fullQuery)}`;
+                    }}
+                    className="w-full text-left px-3 py-3 bg-gray-50 rounded-lg text-sm text-gray-600"
+                  >
+                    🔍 {searchQuery} in Home & Garden
+                  </button>
                 </div>
-              </div>
-            </div>
-          )}
+              </>
+            )}
+          </div>
         </div>
       )}
 
