@@ -25,6 +25,12 @@ const Header = () => {
   const [isAccountDropdownOpen, setIsAccountDropdownOpen] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [showAdvancedSearch, setShowAdvancedSearch] = useState(false);
+  const [isCategoriesDropdownOpen, setIsCategoriesDropdownOpen] = useState(false);
+  const [isMobileCategoriesOpen, setIsMobileCategoriesOpen] = useState(false);
+  // Reset mobile categories submenu when mobile menu opens or closes
+  useEffect(() => {
+    setIsMobileCategoriesOpen(false);
+  }, [isMobileMenuOpen]);
 
   const { items: cartItems, removeItem, updateQuantity } = useCart();
   const cartItemsCount = cartItems.reduce((total: number, item: CartItem) => total + item.quantity, 0);
@@ -32,6 +38,12 @@ const Header = () => {
   const searchRef = useRef<HTMLDivElement>(null);
   const cartRef = useRef<HTMLDivElement>(null);
   const accountRef = useRef<HTMLDivElement>(null);
+
+  const CATEGORIES = [
+    'Fashion & Clothing', 'Electronics & Gadgets', 'Home & Garden', 'Sports & Outdoors',
+    'Books & Media', 'Health & Beauty', 'Jewelry & Accessories', 'Art & Collectibles',
+    'Automotive', 'Baby & Kids', 'Pet Supplies', 'Food & Beverages'
+  ];
 
   // Close dropdowns when clicking outside
   useEffect(() => {
@@ -51,6 +63,11 @@ const Header = () => {
     document.addEventListener('mousedown', handleClickOutside);
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, []);
+
+  // Reset categories submenu when mobile menu opens or closes
+  useEffect(() => {
+    setIsMobileCategoriesOpen(false);
+  }, [isMobileMenuOpen]);
 
   const handleSearchSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -74,6 +91,64 @@ const Header = () => {
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 6h16M4 12h16M4 18h16" />
               </svg>
             </button>
+            {/* Slide-out Mobile Menu */}
+            {isMobileMenuOpen && (
+              <div className="fixed inset-0 z-40 flex">
+                <div
+                  onClick={() => setIsMobileMenuOpen(false)}
+                  className="fixed inset-0 bg-black bg-opacity-25 z-10"
+                />
+                <div className="relative bg-white w-3/4 max-w-xs h-full shadow-xl p-6 overflow-y-auto z-20">
+                  <button
+                    onClick={() => setIsMobileMenuOpen(false)}
+                    className="mb-4 text-gray-600 hover:text-gray-800"
+                  >
+                    {/* Close Icon */}
+                    <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" />
+                    </svg>
+                  </button>
+                  <nav className="space-y-4">
+                    <Link to="/login" className="block text-lg text-gray-700 font-medium">
+                      Sign In
+                    </Link>
+                    <Link to="/signup" className="block text-lg text-gray-700 font-medium">
+                      Create Account
+                    </Link>
+
+                    {/* Mobile Categories Toggle */}
+                    <div className="mt-6">
+  <button
+    onClick={() => setIsMobileCategoriesOpen(prev => !prev)}
+                        className="w-full flex items-center justify-between text-gray-900 font-semibold"
+                      >
+                        Categories
+                        <svg className={`w-5 h-5 transform transition-transform ${isMobileCategoriesOpen ? 'rotate-180' : 'rotate-0'}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                        </svg>
+                      </button>
+                      {isMobileCategoriesOpen && (
+                        <div className="mt-2 space-y-2 ml-4">
+                          <Link to="/categories" className="block text-gray-600 hover:text-gray-800">All Categories</Link>
+                          {CATEGORIES.map(cat => (
+                            <Link key={cat} to={`/categories/${encodeURIComponent(cat)}`} className="block text-gray-600 hover:text-gray-800">
+                              {cat}
+                            </Link>
+                          ))}
+                        </div>
+                      )}
+                    </div>
+                    <div className="mt-6 text-gray-900 font-semibold">Account</div>
+                    <Link to="/profile" className="block text-gray-600 hover:text-gray-800">
+                      My Account
+                    </Link>
+                    <Link to="/orders" className="block text-gray-600 hover:text-gray-800">
+                      My Orders
+                    </Link>
+                  </nav>
+                </div>
+              </div>
+            )}
 
             {/* Logo */}
             <Link to="/" className="flex items-center space-x-3 flex-shrink-0">
@@ -116,9 +191,20 @@ const Header = () => {
               <Link to="/products" className="text-gray-600 hover:text-wowktm-primary transition-colors font-medium">
                 Products
               </Link>
-              <Link to="/categories" className="text-gray-600 hover:text-wowktm-primary transition-colors font-medium">
-                Categories
-              </Link>
+              <div className="relative" onMouseEnter={() => setIsCategoriesDropdownOpen(true)} onMouseLeave={() => setIsCategoriesDropdownOpen(false)}>
+                <button className="text-gray-600 hover:text-wowktm-primary transition-colors font-medium">
+                  Categories
+                </button>
+                {isCategoriesDropdownOpen && (
+                  <div className="absolute top-full left-0 mt-2 bg-white shadow-xl p-4 grid grid-cols-2 gap-4 border rounded-lg z-50">
+                    {CATEGORIES.map(cat => (
+                      <Link key={cat} to={`/categories/${encodeURIComponent(cat)}`} className="block text-gray-700 hover:text-wowktm-primary">
+                        {cat}
+                      </Link>
+                    ))}
+                  </div>
+                )}
+              </div>
               <Link to="/deals" className="text-gray-600 hover:text-wowktm-primary transition-colors font-medium">
                 Deals
               </Link>
@@ -516,7 +602,7 @@ const Header = () => {
                 className="flex items-center px-6 py-3 text-gray-600 hover:text-wowktm-primary hover:bg-gray-50"
               >
                 <svg className="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 2a9 9 0 11-9 9m18 0a9 9 0 01-9-9" />
                 </svg>
                 Deals
               </Link>

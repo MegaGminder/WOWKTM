@@ -64,6 +64,11 @@ const ProductListing: React.FC<ProductListingProps> = ({ category, searchQuery, 
   const { addItem } = useCart();
   const { showToast } = useToast();
 
+  // Reset to first page whenever filters, category, or search change
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [filters, category, searchQuery]);
+
   // Comprehensive Etsy-style product database
   // Using dummy data from external file
 
